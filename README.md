@@ -25,7 +25,8 @@ producto2/
 
 ___
 
-//poder conectar en local y que no rompa en  AWS/Git
+//poder conectar en local y que no rompa en  AWS/Git:
+
 .env:
 DB_HOST=127.0.0.1
 DB_NAME=isla_transfers
