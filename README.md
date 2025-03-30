@@ -11,16 +11,27 @@ Se añade una tabla adicional llamada comentarios, para que los usuarios puedan 
 
 
 producto2/
+
 │
+
 ├── public/            ← Aquí van los archivos que se ven en el navegador (index.php, login.php, etc.)
+
 ├── app/
+
 │   ├── controllers/   ← Aquí va la lógica de cada página (LoginController.php, AdminController.php, etc.)
+
 │   ├── models/        ← Aquí va la lógica de base de datos (Usuario.php, Reserva.php, etc.)
+
 │   └── views/         ← Aquí va el HTML separado por partes (header.php, login.php, adminPanel.php, etc.)
+
 ├── config/
+
 │   └── db.php         ← Archivo de conexión a la base de datos
+
 ├── .gitignore
+
 ├── docker-compose.yml
+
 └── init.sql
 
 ___
@@ -28,9 +39,13 @@ ___
 //poder conectar en local y que no rompa en  AWS/Git:
 
 .env:
+
 DB_HOST=127.0.0.1
+
 DB_NAME=isla_transfers
+
 DB_USER=root
+
 DB_PASS=root
 
 
