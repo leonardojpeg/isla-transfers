@@ -51,10 +51,15 @@ DB_PASS=root
 ___________
 
 git clone https://github.com/leonardojpeg/isla-transfers.git
+
 cd isla-transfers
+
 cp .env.example .env
+
 docker compose up -d
+
 cd public
+
 php -S localhost:8000
 
 PhpMyAdmin: http://localhost:8081 (user: root / pass: root)
