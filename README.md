@@ -64,3 +64,17 @@ php -S localhost:8000
 
 PhpMyAdmin: http://localhost:8081 (user: root / pass: root)
 
+///
+
+git checkout -b tu-nombre-de-rama
+
+git push -u origin tu-nombre-de-rama
+
++
+
+git add .
+
+git commit -m "comentario"
+
+git push
+
