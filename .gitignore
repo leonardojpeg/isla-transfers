@@ -1,6 +1,0 @@
-.env
-/data
-/vendor
-*.log
-*.sql
-.DS_Store

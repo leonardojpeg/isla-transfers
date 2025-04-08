@@ -1,28 +1,28 @@
 services:
   mysql:
     image: mysql:5.7
-    container_name: mysql
+    container_name: p2-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: isla_transfers
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: dgago
+      MYSQL_PASSWORD: 1234
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./UOC_transfers-1-1.sql:/docker-entrypoint-initdb.d/UOC_transfers-1-1.sql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: p2-phpmyadmin
     restart: always
     ports:
       - "8081:80"
     environment:
       PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 1234
 
 volumes:
   mysql_data:
