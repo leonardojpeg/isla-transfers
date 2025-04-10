@@ -1,65 +1,69 @@
 <?php
 ob_start();
+
 require_once __DIR__ . '/../app/views/header.php';
 
-// verificamos la página que se está solicitando
-if (isset($_GET['page'])){
-    $page = $_GET['page'];
+// Verificamos la página que se ha solicitado, si no hay página se redirecciona al WelcomeView.php
+$page = isset($_GET['page']) ? $_GET['page'] : 'welcome';
 
-    if($page == 'welcome'){
+// Switch para acceder a las diferentes vistas
+switch ($page) {
+    case 'welcome':
         require_once __DIR__ . '/../app/views/WelcomeView.php';
-    }
+        break;
 
-    // si se llama a "home" accedemos a index.php
-    if($page == 'home'){
-        require_once __DIR__ . '/../public/index.php';
-    }
+    case 'customerPanel':
+        require_once __DIR__ . '/../app/views/CustomerView.php';
+        break;
+    case 'adminPanel':
+        require_once __DIR__ . '/../app/views/AdminView.php';
+        break;
+    
+    case 'corpPanel':
+        require_once __DIR__ . '/../app/views/CorpView.php';
+        break;
 
-    // si se llama a "login" accedemos a LoginView.php
-    if($page == 'login'){
+    case 'login':
         require_once __DIR__ . '/../app/views/LoginView.php';
-    }
+        break;
 
-    // si se llama a "logout" desde el navbar accedemos al LogoutController.php, eliminará la sesión activa
-    if($page == 'logout'){
+    case 'logout':
         require_once __DIR__ . '/../app/controllers/LogoutController.php';
-    }
+        break;
 
-    //si se llama a "userEditProfile" desde el navbar accederemos al UserEditController.php, podremos editar los datos del usuario
-    if ($page == 'userEditProfile'){
+    case 'userEditProfile':
         require_once __DIR__ . '/../app/views/UserEditView.php';
-    }
+        break;
 
-    // si se llama a "register" accedemos a RegisterView.php
-    if($page == 'register'){
+    case 'register':
         require_once __DIR__ . '/../app/views/RegisterView.php';
+        break;
+
+    default:
+        echo "<h2>Página no encontrada</h2>";
+        break;
+}
+
+// Procesamiento de formularios POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['btn-register'])) {
+        require_once __DIR__ . '/../app/controllers/RegisterController.php';
+        $controller = new RegisterController();
+        $controller->register();
+    }
+
+    if (isset($_POST['submitLogin'])) {
+        require_once __DIR__ . '/../app/controllers/LoginController.php';
+        $controller = new LoginController();
+        $controller->logIn();
+    }
+
+    if (isset($_POST['submitEdit'])) {
+        require_once __DIR__ . '/../app/controllers/UserEditController.php';
+        $controller = new UserEditController();
+        $controller->editProfile();
     }
 }
-
-// verificamos la petición "POST", instanciamos un objeto controlador y ejecutamos la función del controlador
-if (($_SERVER['REQUEST_METHOD']) == 'POST' && isset($_POST['btn-register'])){
-    require_once __DIR__ . '/../app/controllers/RegisterController.php';
-    $controller = new RegisterController();
-    $controller -> register();
-}
-
-// verificamos la petición "POST", instanciamos un objeto controlador y ejecutamos la función del controlador
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitLogin'])){
-    require_once __DIR__ . '/../app/controllers/LoginController.php';
-    $controller = new LoginController();
-    $controller -> logIn();
-}
-
-// verificamos la petición "POST", instanciamos un objeto controllador y ejecutamos la función del controlador
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitEdit'])){
-    require_once __DIR__ . '/../app/controllers/UserEditController.php';
-    $controller = new UserEditController();
-    $controller -> editProfile();
-}
-
-?>
-
-<?php
 
 require_once __DIR__ . '/../app/views/footer.php';
 

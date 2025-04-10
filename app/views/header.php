@@ -25,7 +25,11 @@ require_once __DIR__ . '/../../config/db.php';
           <li class="nav-item">
             <?php session_start(); ?>
             <?php if (isset($_SESSION['id_viajero'])): ?>
-              <a class="nav-link" href="index.php?page=index">Panel de control</a>
+              <a class="nav-link" href="index.php?page=customerPanel">Panel de control</a>
+            <?php elseif (isset($_SESSION['id_vehiculo'])): ?>
+              <a class="nav-link" href="index.php?page=adminPanel">Panel de control</a>
+            <?php elseif (isset($_SESSION['id_hotel'])): ?>
+              <a class="nav-link" href="index.php?page=corpPanel">Panel de control</a>
           </li>
             <?php else: ?>
               <a class="nav-link" href="index.php?page=welcome">Panel de control</a>
@@ -37,9 +41,9 @@ require_once __DIR__ . '/../../config/db.php';
           <a class="nav-link" href="index.php?page=login">Login</a>
         </li>
         <li class="nav-item dropdown">
-          <?php if (isset($_SESSION['nombre']) && isset($_SESSION['apellido1'])): ?>
+          <?php if (isset($_SESSION['email'])): ?>
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <?= htmlspecialchars($_SESSION['nombre']) . ' ' . htmlspecialchars($_SESSION['apellido1']) ?>
+              <?= htmlspecialchars($_SESSION['email']) ?>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="index.php?page=userEditProfile">Editar perfil</a></li>

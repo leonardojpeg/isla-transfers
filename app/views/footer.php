@@ -1,4 +1,4 @@
-<div class="container">
+<div class="col-auto">
     <p class="text-center fw-lighter">Esta aplicación ha sido desarrollada por phpEnjoyers. © 2025 Todos los derechos reservados.</p>
 </div>
 
