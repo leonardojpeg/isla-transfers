@@ -46,7 +46,23 @@ class BookingModel{
         return $stmt->execute();
     }
 
-    public function deleteCustomerBooking($id_reserva){
+    public function adminBookings(){
+        global $pdo;
+
+        $query = "
+        SELECT tr.id_reserva, tr.localizador, tr.id_tipo_reserva, ttr.descripcion AS tipo_reserva_descripcion, tr.email_cliente, tr.fecha_reserva, tr.id_destino, tr.numero_vuelo_entrada, tr.origen_vuelo_entrada, tr.hora_vuelo_salida, tr.fecha_vuelo_salida, tr.num_viajeros, tr.id_vehiculo, tv.Descripción AS vehiculo_descripcion
+        FROM transfer_reservas tr
+        LEFT JOIN transfer_tipo_reserva ttr ON tr.id_tipo_reserva = ttr.id_tipo_reserva
+        LEFT JOIN transfer_vehiculo tv ON tr.id_vehiculo = tv.id_vehiculo
+        ";
+
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteBooking($id_reserva){
         global $pdo;
 
         $query = "DELETE FROM transfer_reservas WHERE id_reserva = :id_reserva";

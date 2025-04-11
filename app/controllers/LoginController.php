@@ -37,7 +37,7 @@ class LoginController {
                    break;
 
                 case "2":
-                    echo "Transfer Administrador";
+                    echo "Transfer Hotel";
                     break;
 
                 case "3":
@@ -49,7 +49,7 @@ class LoginController {
 
                         if($user && $user['password'] === $password){
                             $_SESSION['email'] = $email;
-                            $_SESSION['id_vehiculo'] = $user['id_vehiculo'];
+                            $_SESSION['id_admin'] = $user['id_admin'];
 
                             header("Location: index.php?page=adminPanel");
                             exit;

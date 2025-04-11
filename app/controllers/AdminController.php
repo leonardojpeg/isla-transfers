@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../models/BookingModel.php';
 
-class CustomerModalController{
+class AdminController{
 
     public function addBooking(){
 
@@ -18,7 +18,7 @@ class CustomerModalController{
                 $passengerNum = $_POST['passengerNum'];
                 $vehiculo = $_POST['fleetSelect'];
 
-                $reserveType = 1;
+                $reserveType = 3;
                 $email = $_SESSION['email'];
 
                 $bookingModel = new BookingModel();
@@ -36,22 +36,20 @@ class CustomerModalController{
     }
 
     public function showBookings(){
-        $userEmail = $_SESSION['email'];
-
+        
         $bookingModel = new BookingModel();
-
-        $result = $bookingModel->customerBookings($userEmail);
-
+        $result = $bookingModel->adminBookings();
         return $result;
     }
 
     public function deleteBooking(){
+
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteBooking'])){
             try {
                 $id_reserva = $_POST['id_reserva'];
 
                 $bookingModel = new BookingModel();
-                $resutl = $bookingModel->deleteCustomerBooking($id_reserva);
+                $resutl = $bookingModel->deleteBooking($id_reserva);
 
                 if($resutl){
                     $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
@@ -64,3 +62,6 @@ class CustomerModalController{
         }
     }
 }
+
+
+?>

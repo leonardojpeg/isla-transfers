@@ -40,8 +40,8 @@ if(isset($_SESSION['flash_delete_message'])){
         </thead>
         <tbody>
             <?php 
-            require __DIR__ . '/../controllers/CustomerModalController.php';
-            $controller = new CustomerModalController();
+            require __DIR__ . '/../controllers/CustomerController.php';
+            $controller = new CustomerController();
             $bookings = $controller->showBookings();
 
             foreach($bookings as $row_booking){ ?>

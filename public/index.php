@@ -65,14 +65,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if(isset($_POST['submitReservation'])){
-        require_once __DIR__ . '/../app/controllers/CustomerModalController.php';
-        $controller = new CustomerModalController();
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
         $controller->addBooking();
     }
 
     if(isset($_POST['deleteBooking'])){
-        require_once __DIR__ . '/../app/controllers/CustomerModalController.php';
-        $controller = new CustomerModalController();
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
         $controller->deleteBooking();
     }
 }

@@ -7,9 +7,9 @@ class AdminModel {
     public function getAdminInfo($userId){
         global $pdo;
 
-        $query = "SELECT Descripción, email_conductor, password
-                  FROM transfer_vehiculo
-                  WHERE id_vehiculo = :userId";
+        $query = "SELECT id_admin, usuario, password, email_admin
+                  FROM transfer_admin
+                  WHERE id_admin = :userId";
 
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':userId', $userId);
@@ -26,7 +26,7 @@ class AdminModel {
     public function requestLogIn($email, $password){
         global $pdo;
 
-        $query = "SELECT * FROM transfer_vehiculo WHERE email_conductor = :email AND password = :password";
+        $query = "SELECT * FROM transfer_admin WHERE email_admin = :email AND password = :password";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
@@ -38,7 +38,7 @@ class AdminModel {
     public function getAdminByEmail($email){
         global $pdo;
 
-        $query = "SELECT * FROM transfer_vehiculo WHERE email_conductor = :email";
+        $query = "SELECT * FROM transfer_admin WHERE email_admin = :email";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
