@@ -17,12 +17,27 @@ class RegisterController {
             $password = $_POST['password']; 
 
             $userModel = new UserModel();
-            $result = $userModel->registerUser($username, $surname, $lastname, $address, $cp, $city, $country, $email, $password);
+            $getUser = $userModel->getUserByEmail($email);
 
-            if($result){
-                header("Location: index.php?page=login");
+            if($getUser){
+                echo 
+                    "<script>
+                        alert('El email ya existe en el sistema');
+                    </script>";
             } else {
-                echo "Error al registrar el usuario.";
+                $result = $userModel->registerUser($username, $surname, $lastname, $address, $cp, $city, $country, $email, $password);
+                if($result){
+                    echo "<script>
+                            alert('Usuario registrado correctamente');
+                            window.location.href = 'index.php?page=login';
+                        </script>";
+                    exit;
+                } else {
+                    echo
+                        "<script>
+                            alert('Error al registrar el nuevo usuario');
+                        </script>";
+                }
             }
         }
     }

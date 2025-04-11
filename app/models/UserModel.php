@@ -70,9 +70,11 @@ class UserModel
         $query = "SELECT * FROM transfer_viajeros WHERE email = :email";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':email', $email);
-        $stmt->execute();
+        $stmt->execute();        
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $user ? $user : false;
     }
 
     public function updateUser($userId, $username, $email, $password)
