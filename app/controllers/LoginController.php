@@ -50,7 +50,7 @@ class LoginController {
                         if($user && $user['password'] === $password){
                             $_SESSION['email'] = $email;
                             $_SESSION['id_vehiculo'] = $user['id_vehiculo'];
-
+                            $_SESSION['rol'] = 'admin'; // definir perfil "admin"
                             header("Location: index.php?page=adminPanel");
                             exit;
                         }

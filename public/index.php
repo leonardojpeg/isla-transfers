@@ -15,9 +15,17 @@ switch ($page) {
     case 'customerPanel':
         require_once __DIR__ . '/../app/views/CustomerView.php';
         break;
-    case 'adminPanel':
-        require_once __DIR__ . '/../app/views/AdminView.php';
-        break;
+
+        //  solo un admin logueado pueda acceder a ?page=adminPanel
+        case 'adminPanel':
+            session_start();
+            if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+                header('Location: index.php?page=login');
+                exit;
+            }
+            require_once __DIR__ . '/../app/views/AdminView.php';
+            break;
+        
     
     case 'corpPanel':
         require_once __DIR__ . '/../app/views/CorpView.php';
@@ -46,6 +54,14 @@ switch ($page) {
 
 // Procesamiento de formularios POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if (isset($_GET['action']) && $_GET['action'] === 'crearReserva') {
+        require_once __DIR__ . '/../app/controllers/ReserveController.php';
+        $controller = new ReserveController();
+        $controller->create();
+    }
+
+    
     if (isset($_POST['btn-register'])) {
         require_once __DIR__ . '/../app/controllers/RegisterController.php';
         $controller = new RegisterController();
