@@ -8,6 +8,7 @@ class ReserveModel
     {
         global $pdo;
 
+        try {
         $sql = "INSERT INTO transfer_reservas (
                     localizador, id_hotel, id_tipo_reserva, email_cliente,
                     fecha_reserva, fecha_modificacion, id_destino,
@@ -42,8 +43,11 @@ class ReserveModel
         $stmt->bindValue(':id_vehiculo', $data['id_vehiculo']);
 
         return $stmt->execute();
+    } catch (PDOException $e) {
+        die("❌ Error en la reserva: " . $e->getMessage());
     }
-
+    }
+    
     public function getHotelIdByName($nombre)
     {
         global $pdo;
@@ -69,4 +73,13 @@ class ReserveModel
 
         return $mapa[$descripcion] ?? 1;
     }
+
+    public function obtenerReservas()
+{
+    global $pdo;
+
+    $query = "SELECT * FROM transfer_reservas ORDER BY fecha_reserva DESC";
+    $stmt = $pdo->query($query);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }

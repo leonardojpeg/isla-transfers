@@ -41,6 +41,16 @@ class ReserveController
                 $datosReserva['hora_vuelo_salida'] = $_POST['hora_vuelo'];
             }
 
+
+            $idHotel = $model->getHotelIdByName($hotel);
+
+if ($idHotel === null) {
+    die("❌ No se encontró hotel con usuario o id igual a: " . htmlspecialchars($hotel));
+}
+
+$datosReserva['id_destino'] = $idHotel;
+$datosReserva['id_hotel'] = $idHotel;
+
             $exito = $model->crearReserva($datosReserva);
 
             if ($exito) {
@@ -52,4 +62,12 @@ class ReserveController
             }
         }
     }
+
+    public function mostrarReservas()
+{
+    $model = new ReserveModel();
+    return $model->obtenerReservas();
+}
+
+
 }
