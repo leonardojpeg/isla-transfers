@@ -46,7 +46,7 @@ switch ($page) {
     case 'register':
         require_once __DIR__ . '/../app/views/RegisterView.php';
         break;
-
+        
     default:
         echo "<h2>Página no encontrada</h2>";
         break;
@@ -78,6 +78,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         require_once __DIR__ . '/../app/controllers/UserEditController.php';
         $controller = new UserEditController();
         $controller->editProfile();
+    }
+
+    if(isset($_POST['submitReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->addBooking();
+    }
+
+    if(isset($_POST['deleteBooking'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->deleteBooking();
     }
 }
 
