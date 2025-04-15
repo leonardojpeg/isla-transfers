@@ -69,5 +69,22 @@ $datosReserva['id_hotel'] = $idHotel;
     return $model->obtenerReservas();
 }
 
+public function delete()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_reserva'])) {
+        $id = $_POST['id_reserva'];
+        $model = new ReserveModel();
+
+        if ($model->eliminarReserva($id)) {
+            header("Location: index.php?page=adminPanel&successDelete=1");
+            exit;
+        } else {
+            header("Location: index.php?page=adminPanel&errorDelete=1");
+            exit;
+        }
+    }
+}
+
 
 }
+

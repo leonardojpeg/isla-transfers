@@ -52,7 +52,7 @@ class ReserveModel
     {
         global $pdo;
 
-        $query = "SELECT id_hotel FROM tranfer_hotel WHERE id_hotel = :nombre OR usuario = :nombre LIMIT 1";
+        $query = "SELECT id_hotel FROM transfer_hotel WHERE id_hotel = :nombre OR nombre_hotel = :nombre LIMIT 1";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->execute();
@@ -82,4 +82,18 @@ class ReserveModel
     $stmt = $pdo->query($query);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+public function eliminarReserva($idReserva)
+{
+    global $pdo;
+
+    $stmt = $pdo->prepare("DELETE FROM transfer_reservas WHERE id_reserva = :id");
+    $stmt->bindParam(':id', $idReserva, PDO::PARAM_INT);
+
+    return $stmt->execute();
 }
+
+
+}
+
+

@@ -47,7 +47,14 @@ switch ($page) {
     case 'register':
         require_once __DIR__ . '/../app/views/RegisterView.php';
         break;
-        
+
+    case 'formularioReserva':
+        require_once __DIR__ . '/../app/controllers/ReserveController.php';
+        $controller = new ReserveController();
+        $controller->mostrarFormularioReserva();
+        break;
+
+
     default:
         echo "<h2>Página no encontrada</h2>";
         break;
@@ -92,6 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new CustomerController();
         $controller->deleteBooking();
     }
+    
+    if (isset($_GET['action']) && $_GET['action'] === 'eliminarReserva') {
+        require_once __DIR__ . '/../app/controllers/ReserveController.php';
+        $controller = new ReserveController();
+        $controller->delete();
+    }
+    
 }
 
 require_once __DIR__ . '/../app/views/footer.php';

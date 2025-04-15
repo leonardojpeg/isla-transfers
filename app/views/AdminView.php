@@ -212,13 +212,18 @@ if(isset($_SESSION['flash_delete_message'])){
                 <td><?= $row_booking['num_viajeros']; ?></td>
                 <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                 <td>
-                <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                    <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                    <input type="hidden" name="deleteBooking" value="1">
-                    <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button></td>
+                    <button type="button" class="btn btn-warning">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </button>
+
+                    <form method="POST" action="index.php?action=eliminarReserva" style="display:inline;">
+                        <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </button>
                     </form>
                 </td>
+
             </tr>
             <?php } ?>
         </tbody>
