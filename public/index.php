@@ -6,6 +6,7 @@ require_once __DIR__ . '/../app/views/header.php';
 // Verificamos la página que se ha solicitado, si no hay página se redirecciona al WelcomeView.php
 $page = isset($_GET['page']) ? $_GET['page'] : 'welcome';
 
+
 // Switch para acceder a las diferentes vistas
 switch ($page) {
     case 'welcome':
