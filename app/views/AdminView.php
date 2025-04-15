@@ -177,3 +177,29 @@ if (isset($_SESSION['flash_delete_message'])) {
     </table>
     </div>
 </div>
+
+<div id='calendar' style="min-height: 300px; max-width: 800px; margin: 0 auto;"></div>
+</div>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: 'apiReservas.php',
+            eventClick: function (info) {
+                const reserva = info.event;
+                alert(`Reserva: ${reserva.title}\nFecha: ${reserva.start.toLocaleString()}`);
+            }
+        });
+        calendar.render();
+    });
+</script>
