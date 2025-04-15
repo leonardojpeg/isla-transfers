@@ -47,9 +47,9 @@ function uuidGenerator($long = 7)
                         <input type="date" name="bookingDate" id="bookingDate" class="form-contriol" required>
                     </div>
                     <div class="mb-3">
-                        <?php
+                    <?php
                         global $pdo;
-                        $query = "SELECT id_destino, descripcion FROM transfer_destino";
+                        $query = "SELECT id_hotel, nombre_hotel FROM transfer_hotel";
                         $stmt = $pdo->prepare($query);
                         $stmt->execute();
                         ?>
@@ -57,9 +57,10 @@ function uuidGenerator($long = 7)
                         <select class="form-select" name="destinationSelect">
                             <option selected>Selecionar...</option>
                             <?php while ($row_dest = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-                                <option value="<?php echo $row_dest['id_destino']; ?>"><?php echo $row_dest['descripcion']; ?></option>
+                                <option value="<?php echo $row_dest['id_hotel']; ?>"><?php echo $row_dest['nombre_hotel']; ?></option>
                             <?php } ?>
                         </select>
+
                     </div>
                     <div class="mb-3">
                         <label for="locatorFly" class="form-label">Número de vuelo</label>
@@ -84,7 +85,7 @@ function uuidGenerator($long = 7)
                     <div class="mb-3">
                         <?php
                         global $pdo;
-                        $query = "SELECT id_vehiculo, Descripción FROM transfer_vehiculo";
+                        $query = "SELECT id_vehiculo, descripcion FROM transfer_vehiculo";
                         $stmt = $pdo->prepare($query);
                         $stmt->execute();
                         ?>
@@ -92,7 +93,7 @@ function uuidGenerator($long = 7)
                         <select class="form-select" name="fleetSelect">
                             <option selected>Selecionar...</option>
                             <?php while ($row_fleet = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-                                <option value="<?php echo $row_fleet['id_vehiculo']; ?>"><?php echo $row_fleet['Descripción']; ?></option>
+                                <option value="<?php echo $row_fleet['id_vehiculo']; ?>"><?php echo $row_fleet['descripcion']; ?></option>
                             <?php } ?>
                         </select>
                     </div>
