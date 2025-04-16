@@ -111,6 +111,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->deleteBooking();
     }
 
+    if(isset($_POST['submitEditAdminBooking'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->updateAdminBooking();
+    }
+
     if(isset($_POST['adminDeleteBooking'])){
         require_once __DIR__ . '/../app/controllers/AdminController.php';
         $controller = new AdminController();

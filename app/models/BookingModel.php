@@ -214,18 +214,74 @@ class BookingModel{
         global $pdo;
 
         $query = "
-        SELECT
-            id_reserva,
-            localizador,
-            email_cliente,
-            fecha_reserva,
-            fecha_modificacion
-        FROM transfer_reservas
+        SELECT 
+            tr.id_reserva,
+            tr.localizador,
+            tr.id_tipo_reserva,
+            ttr.descripcion AS tipo_reserva_descripcion,
+            tr.email_cliente,
+            tr.fecha_reserva,
+            tr.fecha_modificacion,
+            tr.fecha_entrada,
+            tr.hora_entrada,
+            tr.fecha_vuelo_salida,
+            tr.hora_vuelo_salida,
+            tr.hora_recogida_salida,
+            tr.numero_vuelo_entrada,
+            tr.origen_vuelo_entrada,
+            tr.num_viajeros,
+            tr.id_vehiculo,
+            tv.descripcion AS vehiculo_descripcion,
+            tr.id_destino,
+            th.nombre_hotel AS destino_nombre_hotel
+        FROM transfer_reservas tr
+        LEFT JOIN transfer_tipo_reserva ttr ON tr.id_tipo_reserva = ttr.id_tipo_reserva
+        LEFT JOIN transfer_vehiculo tv ON tr.id_vehiculo = tv.id_vehiculo
+        LEFT JOIN transfer_hotel th ON tr.id_destino = th.id_hotel
         ";
 
         $stmt = $pdo->prepare($query);
         $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAdminBooking($id_reserva) {
+        global $pdo;
+    
+        $query = "
+            SELECT 
+                tr.id_reserva,
+                tr.localizador,
+                tr.id_tipo_reserva,
+                ttr.descripcion AS tipo_reserva_descripcion,
+                tr.email_cliente,
+                tr.fecha_reserva,
+                tr.fecha_entrada,
+                tr.hora_entrada,
+                tr.fecha_vuelo_salida,
+                tr.hora_vuelo_salida,
+                tr.hora_recogida_salida,
+                tr.numero_vuelo_entrada,
+                tr.origen_vuelo_entrada,
+                tr.num_viajeros,
+                tr.id_vehiculo,
+                tv.descripcion AS vehiculo_descripcion,
+                tr.id_destino,
+                th.nombre_hotel AS destino_nombre_hotel
+            FROM transfer_reservas tr
+            LEFT JOIN transfer_tipo_reserva ttr ON tr.id_tipo_reserva = ttr.id_tipo_reserva
+            LEFT JOIN transfer_vehiculo tv ON tr.id_vehiculo = tv.id_vehiculo
+            LEFT JOIN transfer_hotel th ON tr.id_destino = th.id_hotel
+            WHERE tr.id_reserva = :id_reserva 
+              AND tr.fecha_entrada IS NOT NULL 
+              AND tr.fecha_vuelo_salida IS NOT NULL
+        ";
+    
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id_reserva', $id_reserva);
+        $stmt->execute();
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

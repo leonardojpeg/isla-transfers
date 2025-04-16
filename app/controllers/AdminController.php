@@ -103,6 +103,101 @@ class AdminController{
         return $result;
     }
 
+    public function getAdminBooking(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditAdminBooking'])) {
+            try {
+                $uuid = $_POST['uuid'];
+                $bookingDate = $_POST['bookingDate'];
+                $bookingTime = $_POST['bookingTime'];
+                $flyNumer = $_POST['flyNumer'];
+                $originAirport = $_POST['originAirport'];
+                $dateFly = $_POST['dateFly'];
+                $timeFly = $_POST['timeFly'];
+                $pickupTime = $_POST['pickupTime'];
+                $hotelSelect = $_POST['hotelSelect'];
+                $carSelect = $_POST['carSelect'];
+                $passengerNum = $_POST['passengerNum'];
+                $email = $_POST['email_cliente'];
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateRoundTripBooking(
+                    $uuid,
+                    $bookingDate,
+                    $bookingTime,
+                    $flyNumer,
+                    $originAirport,
+                    $dateFly,
+                    $timeFly,
+                    $pickupTime,
+                    $hotelSelect,
+                    $carSelect,
+                    $passengerNum,
+                    $email
+                );
+
+                if ($result) {
+                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                } else {
+                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                }
+                header("Location: index.php?page=customerPanel");
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=customerPanel");
+                exit;
+            }
+        }
+    }
+
+    public function updateAdminBooking(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditAdminBooking'])) {
+            try {
+                $uuid = $_POST['uuid'];
+                $bookingDate = !empty($_POST['bookingDate']) ? $_POST['bookingDate'] : null;
+                $bookingTime = !empty($_POST['bookingTime']) ? $_POST['bookingTime'] : null;
+                $flyNumer = !empty($_POST['flyNumer']) ? $_POST['flyNumer'] : null;
+                $originAirport = !empty($_POST['originAirport']) ? $_POST['originAirport'] : null;
+                $dateFly = !empty($_POST['dateFly']) ? $_POST['dateFly'] : null;
+                $timeFly = !empty($_POST['timeFly']) ? $_POST['timeFly'] : null;
+                $pickupTime = !empty($_POST['pickupTime']) ? $_POST['pickupTime'] : null;
+                $hotelSelect = !empty($_POST['hotelSelect']) ? $_POST['hotelSelect'] : null;
+                $carSelect = !empty($_POST['carSelect']) ? $_POST['carSelect'] : null;
+                $passengerNum = !empty($_POST['passengerNum']) ? $_POST['passengerNum'] : null;
+                $email = $_POST['customerEmail'];
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateRoundTripBooking(
+                    $uuid,
+                    $bookingDate,
+                    $bookingTime,
+                    $flyNumer,
+                    $originAirport,
+                    $dateFly,
+                    $timeFly,
+                    $pickupTime,
+                    $hotelSelect,
+                    $carSelect,
+                    $passengerNum,
+                    $email
+                );
+
+                if ($result) {
+                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                } else {
+                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                }
+                header("Location: index.php?page=bookingList");
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=bookingList");
+                exit;
+            }
+        }
+    }
+
     public function deleteBooking(){
 
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminDeleteBooking'])){
