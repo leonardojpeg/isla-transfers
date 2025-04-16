@@ -25,7 +25,7 @@ class ReserveController
                 'id_tipo_reserva' => $model->getTipoReservaId($tipoTrayecto),
                 'fecha_reserva' => date('Y-m-d H:i:s'),
                 'fecha_modificacion' => date('Y-m-d H:i:s'),
-                'id_vehiculo' => 1, // temporal mientras no haya lógica de asignación
+                'id_vehiculo' => $_SESSION['id_vehiculo'], // asignación dinámica del usuario loggeado en la tabla transfer_vehiculo
             ];
 
             // Datos opcionales según tipo

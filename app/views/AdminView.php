@@ -19,7 +19,7 @@
     <h4 class="mb-3">Crear nueva reserva</h4>
 
     <!-- Formulario de nueva reserva -->
-    <form action="index.php?action=crearReserva" method="POST" id="formReserva">
+    <form action="index.php?page=adminPanel&action=crearReserva" method="POST" id="formReserva">
         <div class="mb-3">
             <label for="tipoTrayecto" class="form-label">Tipo de trayecto:</label>
             <select name="tipoTrayecto" id="tipoTrayecto" class="form-select" required>
