@@ -88,10 +88,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->editProfile();
     }
 
-    if(isset($_POST['submitReservation'])){
+    if(isset($_POST['submitOneWayReservation'])){
         require_once __DIR__ . '/../app/controllers/CustomerController.php';
         $controller = new CustomerController();
-        $controller->addBooking();
+        $controller->addOneWayBooking();
+    }
+
+    if(isset($_POST['submitReturnReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->addReturnBooking();
+    }
+    
+    if(isset($_POST['submitRoundTripReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->addRoundTripBooking();
     }
 
     if(isset($_POST['deleteBooking'])){
@@ -99,13 +111,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new CustomerController();
         $controller->deleteBooking();
     }
-    
-    if (isset($_GET['action']) && $_GET['action'] === 'eliminarReserva') {
-        require_once __DIR__ . '/../app/controllers/ReserveController.php';
-        $controller = new ReserveController();
-        $controller->delete();
+
+    if(isset($_POST['submitOneWayAdminReservation'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->addOneWayBooking();
     }
-    
+
+    if(isset($_POST['submitReturnAdminReservation'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->addReturnBooking();
+    }
+
+    if(isset($_POST['submitRoundTripAdminReservation'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->addRoundTripBooking();
+    }
+
+    if(isset($_GET['action'])){
+        switch ($_GET['action']){
+            case 'editBooking':
+                require_once __DIR__ . '/../app/controllers/CustomerController.php';
+                $controller = new CustomerController();
+                $controller->editBooking();
+                break;
+            
+            case 'updateBooking':
+                require_once __DIR__ . '/../app/controllers/CustomerController.php';
+                $controller = new CustomerController();
+                $controller->updateBooking();
+                break;
+        }
+    }
 }
 
 require_once __DIR__ . '/../app/views/footer.php';
