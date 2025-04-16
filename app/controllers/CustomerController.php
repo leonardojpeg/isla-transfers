@@ -211,7 +211,7 @@ class CustomerController{
         }
     }
 
-    public function updateBooking(){
+   /* public function updateBooking(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateBooking'])){
             try {
                 $id_reserva = $_POST['id_reserva'];
@@ -236,5 +236,72 @@ class CustomerController{
                 echo "Error al actualizar la reserva: " . $e->getMessage();
             }
         }
+    }*/
+
+
+   public function updateBooking(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateBooking'])) {
+            print_r($_POST);
+            try {
+                $id_reserva = $_POST['id_reserva'];
+                $fecha = $_POST['fecha_entrada'];
+                $hora = $_POST['hora_entrada'];
+                $vuelo = $_POST['numero_vuelo_entrada'];
+                $origen = $_POST['origen_vuelo_entrada'];
+                $destino = $_POST['id_destino'];
+                $pasajeros = $_POST['num_viajeros'];
+                $vehiculo = $_POST['id_vehiculo'];
+                //var_dump($fecha); // debería ser '2025-04-26'
+                //var_dump($hora);  // debería ser '12:01' o '12:01:00' según cómo lo esté enviando el input
+                                // Validación de 48 horas
+
+                // --- Validación: que la reserva solo pueda actualizarse si faltan más de 48h ---
+                $fechaHoraVuelo = DateTime::createFromFormat('Y-m-d H:i:s', $fecha . ' ' . $hora)
+                ?: DateTime::createFromFormat('Y-m-d H:i', $fecha . ' ' . $hora);
+                $now = new DateTime();
+                // calcula la diferencia entre ahora y la fecha del vuelo
+                $diff = $now->diff($fechaHoraVuelo);
+                $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
+    
+                if ($fechaHoraVuelo < $now || $hoursDiff < 48) {
+                    echo "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede editar la reserva con menos de 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
+                    exit;
+
+                }
+    
+                // Guardar cambios
+                $bookingModel = new BookingModel();
+                 // Se llama al modelo para ejecutar el UPDATE
+                $result = $bookingModel->updateOneWayBooking($id_reserva, $fecha, $hora, $vuelo, $origen, $destino, $pasajeros, $vehiculo);
+                 // Si fue exitoso, mostrar mensaje y redirigir al panel del cliente
+                if ($result) {
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizada!',
+                                text: 'La reserva se ha guardado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                    exit;
+
+                }
+    
+            } catch (PDOException $e) {
+                echo "Error al actualizar la reserva: " . $e->getMessage();
+            }
+        }
     }
+
+    
+    
 }

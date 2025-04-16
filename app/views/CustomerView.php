@@ -64,7 +64,9 @@ if (isset($_SESSION['flash_delete_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <a href="index.php?action=editBooking&id=<?= $reserva['id_reserva'] ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                <a href="index.php?action=editBooking&id=<?= $row_booking['id_reserva'] ?>" class="btn btn-warning">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </a>
                                 <input type="hidden" name="deleteBooking" value="1">
                                 <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
                                 <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
@@ -165,7 +167,20 @@ if (isset($_SESSION['flash_delete_message'])) {
                         <td><?= $row_booking['num_viajeros']; ?></td>
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
-                            <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+                            <a href="#"
+                                class="btn btn-warning edit-booking-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editBookingModal"
+                                data-id="<?= $row_booking['id_reserva'] ?>"
+                                data-fecha="<?= $row_booking['fecha_entrada'] ?? '' ?>"
+                                data-hora="<?= $row_booking['hora_entrada'] ?? '' ?>"
+                                data-origen="<?= $row_booking['origen_vuelo_entrada'] ?? '' ?>"
+                                data-vuelo="<?= $row_booking['numero_vuelo_entrada'] ?? '' ?>"
+                                data-pasajeros="<?= $row_booking['num_viajeros'] ?>"
+                                >
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </a>
+
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
                                 <input type="hidden" name="deleteBooking" value="1">
                                 <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
@@ -179,3 +194,73 @@ if (isset($_SESSION['flash_delete_message'])) {
         </table>
     </div>
 </div>
+
+<!-- Modal para editar reservas antes de las 48 horas -->
+<div class="modal fade" id="editBookingModal" tabindex="-1" aria-labelledby="editBookingLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="index.php?page=customerPanel">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBookingLabel">Editar reserva</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="updateBooking" value="1">
+          <input type="hidden" name="id_reserva" id="edit_id_reserva">
+
+          <div class="mb-3">
+            <label for="edit_fecha" class="form-label">Fecha llegada</label>
+            <input type="date" class="form-control" name="fecha_entrada" id="edit_fecha" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_hora" class="form-label">Hora llegada</label>
+            <input type="time" class="form-control" name="hora_entrada" id="edit_hora" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_origen" class="form-label">Origen vuelo</label>
+            <input type="text" class="form-control" name="origen_vuelo_entrada" id="edit_origen" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_numero_vuelo" class="form-label">Número vuelo</label>
+            <input type="text" class="form-control" name="numero_vuelo_entrada" id="edit_numero_vuelo" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_num_viajeros" class="form-label">Nº de pasajeros</label>
+            <input type="number" class="form-control" name="num_viajeros" id="edit_num_viajeros" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_destino" class="form-label">ID Destino</label>
+            <input type="number" class="form-control" name="id_destino" id="edit_destino" required>
+          </div>
+          <div class="mb-3">
+            <label for="edit_vehiculo" class="form-label">ID Vehículo</label>
+            <input type="number" class="form-control" name="id_vehiculo" id="edit_vehiculo" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="action" value="updateBooking">
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+
+      </div>    
+    </form>
+  </div>
+</div>
+
+
+<!-- Acción para los modales de edición -->
+<script>
+document.querySelectorAll('.edit-booking-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        document.getElementById('edit_id_reserva').value = this.dataset.id;
+        document.getElementById('edit_fecha').value = this.dataset.fecha;
+        document.getElementById('edit_hora').value = this.dataset.hora;
+        document.getElementById('edit_origen').value = this.dataset.origen;
+        document.getElementById('edit_numero_vuelo').value = this.dataset.vuelo;
+        document.getElementById('edit_num_viajeros').value = this.dataset.pasajeros;
+        document.getElementById('edit_destino').value = this.dataset.destino;
+        document.getElementById('edit_vehiculo').value = this.dataset.vehiculo;
+    });
+});
+</script>
+

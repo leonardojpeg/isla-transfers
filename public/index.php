@@ -1,4 +1,10 @@
+
 <?php
+
+//Mostrar errores
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ob_start();
 
 require_once __DIR__ . '/../app/views/header.php';
@@ -106,14 +112,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->addRoundTripBooking();
     }
 
-    if(isset($_GET['action'])){
-        switch ($_GET['action']){
-            case 'editBooking':
-                require_once __DIR__ . '/../app/controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $controller->editBooking();
+   // Procesar acciones por GET para updateBooking 
+    if (isset($_GET['action'])) {
+        switch ($_GET['action']) {
+            case 'updateBooking':
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    require_once __DIR__ . '/../app/controllers/CustomerController.php';
+                    $controller = new CustomerController();
+                    $controller->updateBooking();
+                    exit;
+                }
                 break;
-            
+        }
+    }
+    
+    //procesar acción POST para enviar el formulario
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
+        switch ($_POST['action']) {
             case 'updateBooking':
                 require_once __DIR__ . '/../app/controllers/CustomerController.php';
                 $controller = new CustomerController();
@@ -121,9 +136,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 break;
         }
     }
+    
+
+
+    if (isset($_GET['page']) && $_GET['page'] === 'apiReservas') {
+        require_once __DIR__ . '/../public/apiReservas.php';
+        exit;
+    }    
+
 }
 
 require_once __DIR__ . '/../app/views/footer.php';
+if (isset($_SESSION['flash_update_message'])) {
+    echo "<script>alert('" . $_SESSION['flash_update_message'] . "');</script>";
+    unset($_SESSION['flash_update_message']);
+}
 
 ob_end_flush();
 ?>

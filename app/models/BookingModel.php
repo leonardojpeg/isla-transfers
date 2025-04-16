@@ -252,6 +252,46 @@ class BookingModel{
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    
+    public function updateOneWayBooking($id, $fecha, $hora, $vuelo, $origen, $destino, $pasajeros, $vehiculo) {
+        global $pdo;
+    
+        $query = "UPDATE transfer_reservas
+                  SET fecha_entrada = :fecha,
+                      hora_entrada = :hora,
+                      numero_vuelo_entrada = :vuelo,
+                      origen_vuelo_entrada = :origen,
+                      id_destino = :destino,
+                      num_viajeros = :pasajeros,
+                      id_vehiculo = :vehiculo,
+                      fecha_modificacion = NOW()
+                  WHERE id_reserva = :id";
+    
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':hora', $hora);
+        $stmt->bindParam(':vuelo', $vuelo);
+        $stmt->bindParam(':origen', $origen);
+        $stmt->bindParam(':destino', $destino);
+        $stmt->bindParam(':pasajeros', $pasajeros);
+        $stmt->bindParam(':vehiculo', $vehiculo);
+        $stmt->bindParam(':id', $id);
+    
+        $executed = $stmt->execute();
+    
+        if (!$executed) {
+            echo "Error al ejecutar el UPDATE<br>";
+            print_r($stmt->errorInfo());
+            die();
+        }
+    
+        return $executed;
+    }
+    
+
+    
+    
 }
 
 ?>

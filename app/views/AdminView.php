@@ -196,8 +196,8 @@ if (isset($_SESSION['flash_delete_message'])) {
             },
             events: 'apiReservas.php',
             eventClick: function (info) {
-                const reserva = info.event;
-                alert(`Reserva: ${reserva.title}\nFecha: ${reserva.start.toLocaleString()}`);
+                const detalles = info.event.extendedProps.description;
+                alert(detalles);
             }
         });
         calendar.render();
