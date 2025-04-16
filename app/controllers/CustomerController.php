@@ -2,9 +2,11 @@
 
 require_once __DIR__ . '/../models/BookingModel.php';
 
-class CustomerController{
+class CustomerController
+{
 
-    public function addOneWayBooking() {
+    public function addOneWayBooking()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $uuid = $_POST['uuid'];
@@ -15,27 +17,27 @@ class CustomerController{
                 $hotelSelect = $_POST['hotelSelect'];
                 $carSelect = $_POST['carSelect'];
                 $passengerNum = $_POST['passengerNum'];
-    
+
                 $reserveType = 1; //reserva de tipo Cliente
                 $email = $_SESSION['email']; //obtenemos email de SESSION
-    
+
                 // Unificamos fecha y hora de la reserva
                 $bookingDateTime = DateTime::createFromFormat('Y-m-d H:i', $bookingDate . ' ' . $bookingTime);
                 $now = new DateTime();
-    
+
                 // Verificamos que la reserva sea con al menos 48 horas de antelación
                 $diff = $now->diff($bookingDateTime);
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
-    
+
                 if ($bookingDateTime < $now || $hoursDiff < 48) {
                     $_SESSION['flash_add_message'] = "Las reservas deben realizarse con al menos 48 horas de antelación.";
                     header("Location: index.php?page=customerPanel");
                     exit;
                 }
-    
+
                 $bookingModel = new BookingModel();
                 $result = $bookingModel->addOneWayBooking($uuid, $bookingDate, $bookingTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
-                
+
                 if ($result) {
                     $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
                     header("Location: index.php?page=customerPanel");
@@ -47,14 +49,14 @@ class CustomerController{
         }
     }
 
-    public function addReturnBooking(){
+    public function addReturnBooking()
+    {
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $uuid = $_POST['uuid'];
                 $dateFly = $_POST['dateFly'];
                 $timeFly = $_POST['timeFly'];
-                $flyNumer = $_POST['flyNumer'];
                 $pickupTime = $_POST['pickupTime'];
                 $hotelSelect = $_POST['hotelSelect'];
                 $carSelect = $_POST['carSelect'];
@@ -70,7 +72,7 @@ class CustomerController{
                 // Verificamos que la reserva sea con al menos 48 horas de antelación
                 $diff = $now->diff($pickupDateTime);
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
-                
+
                 if ($pickupDateTime < $now || $hoursDiff < 48) {
                     $_SESSION['flash_add_message'] = "Las reservas deben realizarse con al menos 48 horas de antelación.";
                     header("Location: index.php?page=customerPanel");
@@ -78,9 +80,9 @@ class CustomerController{
                 }
 
                 $bookingModel = new BookingModel();
-                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $flyNumer, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
-                
-                if($result){
+                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
+
+                if ($result) {
                     $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
                     header("Location: index.php?page=customerPanel");
                     exit;
@@ -91,9 +93,10 @@ class CustomerController{
         }
     }
 
-    public function addRoundTripBooking(){
-        
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    public function addRoundTripBooking()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $uuid = $_POST['uuid'];
                 $bookingDate = $_POST['bookingDate'];
@@ -125,8 +128,8 @@ class CustomerController{
 
                 $bookingModel = new BookingModel();
                 $result = $bookingModel->addRoundTripBooking($uuid, $bookingDate, $bookingTime, $dateFly, $timeFly, $pickupTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
-                
-                if($result){
+
+                if ($result) {
                     $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
                     header("Location: index.php?page=customerPanel");
                     exit;
@@ -137,7 +140,8 @@ class CustomerController{
         }
     }
 
-    public function showOneWayBookings(){
+    public function showOneWayBookings()
+    {
         $userEmail = $_SESSION['email'];
 
         $bookingModel = new BookingModel();
@@ -147,7 +151,8 @@ class CustomerController{
         return $result;
     }
 
-    public function showReturnBookings(){
+    public function showReturnBookings()
+    {
         $userEmail = $_SESSION['email'];
 
         $bookingModel = new BookingModel();
@@ -157,7 +162,8 @@ class CustomerController{
         return $result;
     }
 
-    public function showRoundTripBookings(){
+    public function showRoundTripBookings()
+    {
         $userEmail = $_SESSION['email'];
 
         $bookingModel = new BookingModel();
@@ -167,73 +173,261 @@ class CustomerController{
         return $result;
     }
 
-    public function deleteBooking(){
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteBooking'])){
+    public function deleteBooking()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteBooking'])) {
             try {
                 $id_reserva = $_POST['id_reserva'];
 
                 $bookingModel = new BookingModel();
-                $resutl = $bookingModel->deleteBooking($id_reserva);
+                $booking = $bookingModel->getBookingById($id_reserva);
 
-                if($resutl){
-                    $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=customerPanel");
+                if ($booking) {
+                    $now = new DateTime();
+                    $validDateTimes = [];
+
+                    if (!empty($booking['fecha_entrada']) && !empty($booking['hora_entrada'])) {
+                        $oneWayDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $booking['fecha_entrada'] . ' ' . $booking['hora_entrada']);
+                        if ($oneWayDateTime !== false) {
+                            $validDateTimes[] = $oneWayDateTime;
+                        }
+                    }
+
+                    if (!empty($booking['fecha_vuelo_salida']) && !empty($booking['hora_vuelo_salida'])) {
+                        $returnDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $booking['fecha_vuelo_salida'] . ' ' . $booking['hora_vuelo_salida']);
+                        if ($returnDateTime !== false) {
+                            $validDateTimes[] = $returnDateTime;
+                        }
+                    }
+
+                    if (empty($validDateTimes)) {
+                        $_SESSION['flash_delete_message'] = "No se pudo validar la fecha de la reserva.";
+                        header("Location: index.php?page=customerPanel");
+                        exit;
+                    }
+
+                    foreach ($validDateTimes as $dateTime) {
+                        $diff = $now->diff($dateTime);
+                        $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
+
+                        if ($dateTime < $now || $hoursDiff < 48) {
+                            echo
+                            "<script>
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'No se puede eliminar una con menos de 48 horas de antelación',
+                                        icon: 'error'
+                                    }).then(() => {
+                                        window.location.href = 'index.php?page=customerPanel';
+                                    });
+                                </script>";
+                            exit;
+                        }
+                    }
+
+                    $result = $bookingModel->deleteBooking($id_reserva);
+                    if ($result) {
+                        $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
+                        header('Location: index.php?page=customerPanel');
+                        exit;
+                    }
+                } else {
+                    $_SESSION['flash_delete_message'] = "Reserva no encontrada";
+                    header('Location: index.php?page=customerPanel');
                     exit;
                 }
-            } catch (Exception $e){
+            } catch (Exception $e) {
                 echo "Error al eliminar la reserva: " . $e->getMessage();
             }
         }
     }
 
-    // public function getUpOneWayBooking(){
-    //     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBooking'])){
-    //         try {
-    //             $id_reserva = $_POST['id_reserva'];
+    public function updateOneWayBooking()
+    {
 
-    //             $bookingModel = new BookingModel();
-    //             $result = $bookingModel->getUpOneWayBooking($id_reserva);
-    //         }
-    //     }
-    // }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditOneWayReservation'])) {
+            try {
+                $uuid = $_POST['uuid'];
+                $bookingDate = $_POST['bookingDate'];
+                $bookingTime = $_POST['bookingTime'];
+                $flyNumer = $_POST['flyNumer'];
+                $originAirport = $_POST['originAirport'];
+                $hotelSelect = $_POST['hotelSelect'];
+                $carSelect = $_POST['carSelect'];
+                $passengerNum = $_POST['passengerNum'];
+                $email = $_SESSION['email']; // obtenemos email de SESSION
 
-    public function editBooking(){
-        if (isset($_GET['id'])){
-            $id_reserva = $_GET['id'];
 
-            $bookingModel = new BookingModel();
+                $bookingDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $bookingDate . ' ' . $bookingTime);
+                $now = new DateTime();
 
-            $booking = $bookingModel->getUpOneWayBooking($id_reserva);
+                $diff = $now->diff($bookingDateTime);
+                $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
 
-            require_once __DIR__ . '/../controllers/updateBookingForm.php';
-        } else {
-            header('Location: index.php?page=customerPanel');
+                if ($bookingDateTime < $now || $hoursDiff < 48) {
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede modificar una reserva con menos de 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
+                    exit;
+                }
+
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateOneWayBooking($uuid, $bookingDate, $bookingTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $email);
+
+                if ($result) {
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
+                } else {
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
+                    exit;
+                }
+                header('Location: indexphp?page=customerPanel');
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=customerPanel");
+                exit;
+            }
         }
     }
 
-    public function updateBooking(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateBooking'])){
+
+    public function updateReturnBooking()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditReturnReservation'])) {
             try {
-                $id_reserva = $_POST['id_reserva'];
-                $fecha = $_POST['fecha_entrada'];
-                $hora = $_POST['hora_entrada'];
-                $vuelo = $_POST['numero_vuelo_entrada'];
-                $origen = $_POST['origen_vuelo_entrada'];
-                $destino = $_POST['id_destino'];
-                $pasajeros = $_POST['num_viajeros'];
-                $vehiculo = $_POST['id_vehiculo'];
+                $uuid = $_POST['uuid'];
+                $dateFly = $_POST['dateFly'];
+                $timeFly = $_POST['timeFly'];
+                $pickupTime = $_POST['pickupTime'];
+                $hotelSelect = $_POST['hotelSelect'];
+                $carSelect = $_POST['carSelect'];
+                $passengerNum = $_POST['passengerNum'];
 
-                $bookingModel = new BookingModel();
+                $email = $_SESSION['email']; // obtenemos email de SESSION
 
-                $result = $bookingModel->getUpOneWayBooking($id_reserva, $fecha, $hora, $vuelo, $origen, $destino, $pasajeros, $vehiculo);
 
-                if($result){
-                    $_SESSION['flash_update_message'] = "Reserva actualizada correctamente";
-                    header('Location: index.php?page=customerPanel');
+                $bookingDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $dateFly . ' ' . $timeFly);
+                $now = new DateTime();
+
+                $diff = $now->diff($bookingDateTime);
+                $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
+
+                if ($bookingDateTime < $now || $hoursDiff < 48) {
+                    $_SESSION['flash_edit_message'] = "Las modificaciones deben realizarse con al menos 48 horas de antelación.";
+                    header("Location: index.php?page=customerPanel");
                     exit;
                 }
-            } catch (PDOException $e){
-                echo "Error al actualizar la reserva: " . $e->getMessage();
+
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $email);
+
+                if ($result) {
+                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente";
+                } else {
+                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva";
+                }
+                header('Location: indexphp?page=customerPanel');
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=customerPanel");
+                exit;
+            }
+        }
+    }
+
+    public function updateRoundTripBooking()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditRoundTripReservation'])) {
+            try {
+                $uuid = $_POST['uuid'];
+                $bookingDate = $_POST['bookingDate'];
+                $bookingTime = $_POST['bookingTime'];
+                $flyNumer = $_POST['flyNumer'];
+                $originAirport = $_POST['originAirport'];
+                $dateFly = $_POST['dateFly'];
+                $timeFly = $_POST['timeFly'];
+                $pickupTime = $_POST['pickupTime'];
+                $hotelSelect = $_POST['hotelSelect'];
+
+                $carSelect = $_POST['carSelect'];
+                $passengerNum = $_POST['passengerNum'];
+
+                $email = $_SESSION['email']; // obtenemos email de SESSION
+
+                // Validación de antelación mínima (48h) tanto para ida como vuelta
+                $arrivalDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $bookingDate . ' ' . $bookingTime);
+                $returnDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $dateFly . ' ' . $timeFly);
+                $now = new DateTime();
+
+                $diffArrival = $now->diff($arrivalDateTime);
+                $hoursArrival = ($diffArrival->days * 24) + $diffArrival->h + ($diffArrival->i / 60);
+
+                $diffReturn = $now->diff($returnDateTime);
+                $hoursReturn = ($diffReturn->days * 24) + $diffReturn->h + ($diffReturn->i / 60);
+
+                if ($arrivalDateTime < $now || $hoursArrival < 48 || $returnDateTime < $now || $hoursReturn < 48) {
+                    $_SESSION['flash_edit_message'] = "Las modificaciones deben realizarse con al menos 48 horas de antelación para ambos trayectos.";
+                    header("Location: index.php?page=customerPanel");
+                    exit;
+                }
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateRoundTripBooking(
+                    $uuid,
+                    $bookingDate,
+                    $bookingTime,
+                    $flyNumer,
+                    $originAirport,
+                    $dateFly,
+                    $timeFly,
+                    $pickupTime,
+                    $hotelSelect,
+                    $carSelect,
+                    $passengerNum,
+                    $email
+                );
+
+                if ($result) {
+                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                } else {
+                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                }
+                header("Location: index.php?page=customerPanel");
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=customerPanel");
+                exit;
             }
         }
     }

@@ -17,17 +17,14 @@ switch ($page) {
         require_once __DIR__ . '/../app/views/CustomerView.php';
         break;
 
-        //  solo un admin logueado pueda acceder a ?page=adminPanel
-        case 'adminPanel':
-            session_start();
-            if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
-                header('Location: index.php?page=login');
-                exit;
-            }
-            require_once __DIR__ . '/../app/views/AdminView.php';
-            break;
-        
-    
+    case 'adminPanel':
+        require_once __DIR__ . '/../app/views/AdminView.php';
+        break;
+
+    case 'bookingList':
+        require_once __DIR__ . '/../app/views/BookingListView.php';
+        break;
+
     case 'corpPanel':
         require_once __DIR__ . '/../app/views/CorpView.php';
         break;
@@ -94,10 +91,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->addOneWayBooking();
     }
 
+    if(isset($_POST['submitEditOneWayReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->updateOneWayBooking();
+    }
+
     if(isset($_POST['submitReturnReservation'])){
         require_once __DIR__ . '/../app/controllers/CustomerController.php';
         $controller = new CustomerController();
         $controller->addReturnBooking();
+    }
+
+    if(isset($_POST['submitEditReturnReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->updateReturnBooking();
     }
     
     if(isset($_POST['submitRoundTripReservation'])){
@@ -106,9 +115,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->addRoundTripBooking();
     }
 
+    if(isset($_POST['submitEditRoundTripReservation'])){
+        require_once __DIR__ . '/../app/controllers/CustomerController.php';
+        $controller = new CustomerController();
+        $controller->updateRoundTripBooking();
+    }
+
     if(isset($_POST['deleteBooking'])){
         require_once __DIR__ . '/../app/controllers/CustomerController.php';
         $controller = new CustomerController();
+        $controller->deleteBooking();
+    }
+
+    if(isset($_POST['submitEditAdminBooking'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
+        $controller->updateAdminBooking();
+    }
+
+    if(isset($_POST['adminDeleteBooking'])){
+        require_once __DIR__ . '/../app/controllers/AdminController.php';
+        $controller = new AdminController();
         $controller->deleteBooking();
     }
 
@@ -130,21 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->addRoundTripBooking();
     }
 
-    if(isset($_GET['action'])){
-        switch ($_GET['action']){
-            case 'editBooking':
-                require_once __DIR__ . '/../app/controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $controller->editBooking();
-                break;
-            
-            case 'updateBooking':
-                require_once __DIR__ . '/../app/controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $controller->updateBooking();
-                break;
-        }
-    }
+    
+
 }
 
 require_once __DIR__ . '/../app/views/footer.php';

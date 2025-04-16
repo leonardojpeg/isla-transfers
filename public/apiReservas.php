@@ -7,7 +7,8 @@ try {
         SELECT 
             tr.localizador, 
             tr.fecha_reserva, 
-            th.nombre_hotel 
+            th.nombre_hotel,
+            tr.email_cliente
         FROM transfer_reservas tr
         JOIN transfer_hotel th ON tr.id_destino = th.id_hotel
     ");
@@ -16,7 +17,7 @@ try {
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $reservas[] = [
-            'title' => $row['localizador'] . ' Destino; ' . $row['nombre_hotel'],
+            'title' => $row['localizador'] . "\n" . 'Destino: ' . $row['nombre_hotel'] . "\n" . 'Cliente: ' . $row['email_cliente'],
             'start' => $row['fecha_reserva']
         ];
     }
