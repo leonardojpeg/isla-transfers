@@ -105,7 +105,7 @@ class AdminController{
 
     public function deleteBooking(){
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteBooking'])){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminDeleteBooking'])){
             try {
                 $id_reserva = $_POST['id_reserva'];
 
@@ -114,7 +114,7 @@ class AdminController{
 
                 if($resutl){
                     $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=adminPanel");
+                    header("Location: index.php?page=bookingList");
                     exit;
                 }
             } catch (Exception $e){
@@ -123,6 +123,5 @@ class AdminController{
         }
     }
 }
-
 
 ?>

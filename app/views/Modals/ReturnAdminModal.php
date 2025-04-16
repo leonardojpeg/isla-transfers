@@ -96,7 +96,7 @@ require_once __DIR__ . '/../../../config/db.php';
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cerrar</button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fa-solid fa-download"></i> Registrar reserva
                         </button>
