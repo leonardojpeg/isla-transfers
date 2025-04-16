@@ -26,154 +26,29 @@ if (isset($_SESSION['flash_delete_message'])) {
         </div>
     </div>
 
-    <!-- Tabla reservas ida -->
-    <div class="container py-5">
-        <h5>Reservas realizadas Aeropuerto-Hotel</h5>
-        <table class="table table-sm table-striped trable-hover mt-4">
-            <thead class="table-dark">
-                <tr>
-                    <th>Realizada por</th>
-                    <th>Localizador</th>
-                    <th>Email cliente</th>
-                    <th>Fecha reserva</th>
-                    <th>Destino</th>
-                    <th>Fecha de llegada</th>
-                    <th>Hora de llegada</th>
-                    <th>Origen del vuelo llegada</th>
-                    <th>Pasajeros</th>
-                    <th>Vehículo</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                require __DIR__ . '/../controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $oneWayBookings = $controller->showOneWayBookings();
-                foreach ($oneWayBookings as $row_booking) { ?>
-                    <tr>
-                        <td><?= $row_booking['tipo_reserva_descripcion']; ?></td>
-                        <td><?= $row_booking['localizador']; ?></td>
-                        <td><?= $row_booking['email_cliente']; ?></td>
-                        <td><?= $row_booking['fecha_reserva']; ?></td>
-                        <td><?= $row_booking['destino_nombre_hotel']; ?></td>
-                        <td><?= $row_booking['fecha_entrada']; ?></td>
-                        <td><?= $row_booking['hora_entrada']; ?></td>
-                        <td><?= $row_booking['origen_vuelo_entrada']; ?></td>
-                        <td><?= $row_booking['num_viajeros']; ?></td>
-                        <td><?= $row_booking['vehiculo_descripcion']; ?></td>
-                        <td>
-                            <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                            <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <input type="hidden" name="deleteBooking" value="1">
-                                <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
-                        </td>
-                        </form>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Tabla reserva vuelta -->
-    <div class="container py-5">
-    <h5>Reservas realizadas Hotel-Aeropuerto</h5>
-    <table class="table table-sm table-striped trable-hover mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>Realizada por</th>
-                <th>Localizador</th>
-                <th>Email cliente</th>
-                <th>Fecha reserva</th>
-                <th>Destino</th>
-                <th>Fecha de salida</th>
-                <th>Hora de salida</th>
-                <th>Hora de recogida</th>
-                <th>Pasajeros</th>
-                <th>Vehículo</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-            $returnBookings = $controller->showReturnBookings();
-            foreach($returnBookings as $row_booking){ ?>
-            <tr>
-                <td><?= $row_booking['tipo_reserva_descripcion']; ?></td>
-                <td><?= $row_booking['localizador']; ?></td>
-                <td><?= $row_booking['email_cliente']; ?></td>
-                <td><?= $row_booking['fecha_reserva']; ?></td>
-                <td><?= $row_booking['destino_nombre_hotel']; ?></td>
-                <td><?= $row_booking['fecha_vuelo_salida']; ?></td>
-                <td><?= $row_booking['hora_vuelo_salida']; ?></td>
-                <td><?= $row_booking['hora_recogida_salida']; ?></td>
-                <td><?= $row_booking['num_viajeros']; ?></td>
-                <td><?= $row_booking['vehiculo_descripcion']; ?></td>
-                <td>
-                <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                    <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                    <input type="hidden" name="deleteBooking" value="1">
-                    <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button></td>
-                    </form>
-                </td>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-    </div>
-
-    <!-- Tabla reservas ida-vuelta -->
-    <div class="container py-5">
-        <h5>Reservas realizadas Aeropuerto-Hotel (ida-vuelta)</h5>
-    <table class="table table-sm table-striped trable-hover mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>Realizada por</th>
-                <th>Localizador</th>
-                <th>Email cliente</th>
-                <th>Fecha reserva</th>
-                <th>Destino</th>
-                <th>Fecha de llegada</th>
-                <th>Hora de llegada</th>
-                <th>Origen del vuelo llegada</th>
-                <th>Fecha de salida</th>
-                <th>Hora de salida</th>
-                <th>Pasajeros</th>
-                <th>Vehículo</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-            $roundTripBookings = $controller->showRoundTripBookings();
-            foreach($roundTripBookings as $row_booking){ ?>
-            <tr>
-                <td><?= $row_booking['tipo_reserva_descripcion']; ?></td>
-                <td><?= $row_booking['localizador']; ?></td>
-                <td><?= $row_booking['email_cliente']; ?></td>
-                <td><?= $row_booking['fecha_reserva']; ?></td>
-                <td><?= $row_booking['destino_nombre_hotel']; ?></td>
-                <td><?= $row_booking['fecha_entrada']; ?></td>
-                <td><?= $row_booking['hora_entrada']; ?></td>
-                <td><?= $row_booking['origen_vuelo_entrada']; ?></td>
-                <td><?= $row_booking['fecha_vuelo_salida']; ?></td>
-                <td><?= $row_booking['hora_vuelo_salida']; ?></td>
-                <td><?= $row_booking['num_viajeros']; ?></td>
-                <td><?= $row_booking['vehiculo_descripcion']; ?></td>
-                <td>
-                <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                    <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                    <input type="hidden" name="deleteBooking" value="1">
-                    <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                    <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button></td>
-                    </form>
-                </td>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+    <div class="p-5" id='calendar' style="min-height: 300px; max-width: 800px; margin: 0 auto;">
     </div>
 </div>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: 'apiReservas.php',
+            eventClick: function(info) {
+                const reserva = info.event;
+                alert(`Reserva: ${reserva.title}\nFecha: ${reserva.start.toLocaleString()}`);
+            }
+        });
+        calendar.render();
+    });
+</script>

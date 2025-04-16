@@ -173,11 +173,52 @@ class CustomerController{
                 $id_reserva = $_POST['id_reserva'];
 
                 $bookingModel = new BookingModel();
-                $resutl = $bookingModel->deleteBooking($id_reserva);
+                $booking = $bookingModel->getBookingById($id_reserva);
 
-                if($resutl){
-                    $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=customerPanel");
+                if ($booking){
+                    $now = new DateTime();
+                    $validDateTimes = [];
+
+                    if (!empty($booking['fecha_reserva']) && !empty($booking['hora_reserva'])) {
+                        $oneWayDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $booking['fecha_reserva'] . ' ' . $booking['hora_reserva']);
+                        if($oneWayDateTime !== false){
+                            $validDateTimes[] = $oneWayDateTime;
+                        }
+                    }
+    
+                    if (!empty($booking['fecha_vuelo_salida']) && !empty($booking['hora_vuelo_salida'])) {
+                        $returnDateTime = DateTime::createFromFormat('Y-m-d H:i:s', $booking['fecha_vuelo_salida'] . ' ' . $booking['hora_vuelo_salida']);
+                        if($returnDateTime !== false){
+                            $validDateTimes[] = $returnDateTime;
+                        }
+                    }
+    
+                    if (empty($validDateTimes)) {
+                        $_SESSION['flash_delete_message'] = "No se pudo validar la fecha de la reserva.";
+                        header("Location: index.php?page=customerPanel");
+                        exit;
+                    }
+
+                    foreach ($validDateTimes as $dateTime) {
+                        $diff = $now->diff($dateTime);
+                        $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
+    
+                        if ($dateTime < $now || $hoursDiff < 48) {
+                            $_SESSION['flash_delete_message'] = "No se puede eliminar la reserva porque falta menos de 48 horas.";
+                            header("Location: index.php?page=customerPanel");
+                            exit;
+                        }
+                    }
+
+                    $result = $bookingModel->deleteBooking($id_reserva);
+                    if($result){
+                        $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
+                        header('Location: index.php?page=customerPanel');
+                        exit;
+                    }
+                } else {
+                    $_SESSION['flash_delete_message'] = "Reserva no encontrada";
+                    header('Location: index.php?page=customerPanel');
                     exit;
                 }
             } catch (Exception $e){
@@ -186,55 +227,5 @@ class CustomerController{
         }
     }
 
-    // public function getUpOneWayBooking(){
-    //     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBooking'])){
-    //         try {
-    //             $id_reserva = $_POST['id_reserva'];
 
-    //             $bookingModel = new BookingModel();
-    //             $result = $bookingModel->getUpOneWayBooking($id_reserva);
-    //         }
-    //     }
-    // }
-
-    public function editBooking(){
-        if (isset($_GET['id'])){
-            $id_reserva = $_GET['id'];
-
-            $bookingModel = new BookingModel();
-
-            $booking = $bookingModel->getUpOneWayBooking($id_reserva);
-
-            require_once __DIR__ . '/../controllers/updateBookingForm.php';
-        } else {
-            header('Location: index.php?page=customerPanel');
-        }
-    }
-
-    public function updateBooking(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateBooking'])){
-            try {
-                $id_reserva = $_POST['id_reserva'];
-                $fecha = $_POST['fecha_entrada'];
-                $hora = $_POST['hora_entrada'];
-                $vuelo = $_POST['numero_vuelo_entrada'];
-                $origen = $_POST['origen_vuelo_entrada'];
-                $destino = $_POST['id_destino'];
-                $pasajeros = $_POST['num_viajeros'];
-                $vehiculo = $_POST['id_vehiculo'];
-
-                $bookingModel = new BookingModel();
-
-                $result = $bookingModel->getUpOneWayBooking($id_reserva, $fecha, $hora, $vuelo, $origen, $destino, $pasajeros, $vehiculo);
-
-                if($result){
-                    $_SESSION['flash_update_message'] = "Reserva actualizada correctamente";
-                    header('Location: index.php?page=customerPanel');
-                    exit;
-                }
-            } catch (PDOException $e){
-                echo "Error al actualizar la reserva: " . $e->getMessage();
-            }
-        }
-    }
 }

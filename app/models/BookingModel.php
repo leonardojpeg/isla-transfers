@@ -252,6 +252,17 @@ class BookingModel{
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getBookingById($id_reserva){
+        global $pdo;
+
+        $query = "SELECT fecha_entrada, hora_entrada, fecha_vuelo_salida, hora_vuelo_salida FROM transfer_reservas WHERE id_reserva = :id_reserva";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':id_reserva', $id_reserva);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

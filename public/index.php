@@ -106,21 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller->addRoundTripBooking();
     }
 
-    if(isset($_GET['action'])){
-        switch ($_GET['action']){
-            case 'editBooking':
-                require_once __DIR__ . '/../app/controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $controller->editBooking();
-                break;
-            
-            case 'updateBooking':
-                require_once __DIR__ . '/../app/controllers/CustomerController.php';
-                $controller = new CustomerController();
-                $controller->updateBooking();
-                break;
-        }
-    }
 }
 
 require_once __DIR__ . '/../app/views/footer.php';
