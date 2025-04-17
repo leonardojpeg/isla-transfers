@@ -34,10 +34,14 @@ try {
                 if (!empty($row['fecha_entrada'])) {
                     $title = $baseTitle . ' (IDA)';
                     $tooltip = $commonInfo .
-                               "\nFecha llegada: {$row['fecha_entrada']}" .
-                               "\nHora llegada: {$row['hora_entrada']}" .
-                               "\nVuelo: {$row['numero_vuelo_entrada']}" .
-                               "\nOrigen: {$row['origen_vuelo_entrada']}";
+                    "\nFecha llegada: {$row['fecha_entrada']}" .
+                    "\nHora llegada: {$row['hora_entrada']}" .
+                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
+                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
+                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
+                    "\nHora salida: {$row['hora_vuelo_salida']}" .
+                    "\nHora recogida: {$row['hora_recogida_salida']}" .
+                    "\nVehículo ID: {$row['id_vehiculo']}";                
 
                             $reservas[] = [
                                 'id' => $row['id_reserva'],
@@ -69,9 +73,15 @@ try {
                 if (!empty($row['fecha_vuelo_salida'])) {
                     $title = $baseTitle . ' (VUELTA)';
                     $tooltip = $commonInfo .
-                               "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                               "\nHora salida: {$row['hora_vuelo_salida']}" .
-                               "\nHora recogida: {$row['hora_recogida_salida']}";
+                    "\nFecha entrada: {$row['fecha_entrada']}" .
+                    "\nHora entrada: {$row['hora_entrada']}" .
+                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
+                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
+                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
+                    "\nHora salida: {$row['hora_vuelo_salida']}" .
+                    "\nHora recogida: {$row['hora_recogida_salida']}" .
+                    "\nVehículo ID: {$row['id_vehiculo']}";
+                
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
@@ -102,10 +112,15 @@ try {
                 if (!empty($row['fecha_entrada'])) {
                     $title = $baseTitle . ' (IDA)';
                     $tooltip = $commonInfo .
-                               "\nFecha llegada: {$row['fecha_entrada']}" .
-                               "\nHora llegada: {$row['hora_entrada']}" .
-                               "\nVuelo: {$row['numero_vuelo_entrada']}" .
-                               "\nOrigen: {$row['origen_vuelo_entrada']}";
+                    "\nFecha llegada: {$row['fecha_entrada']}" .
+                    "\nHora llegada: {$row['hora_entrada']}" .
+                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
+                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
+                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
+                    "\nHora salida: {$row['hora_vuelo_salida']}" .
+                    "\nHora recogida: {$row['hora_recogida_salida']}" .
+                    "\nVehículo ID: {$row['id_vehiculo']}";
+                
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
@@ -133,9 +148,15 @@ try {
                 if (!empty($row['fecha_vuelo_salida'])) {
                     $title = $baseTitle . ' (VUELTA)';
                     $tooltip = $commonInfo .
-                               "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                               "\nHora salida: {$row['hora_vuelo_salida']}" .
-                               "\nHora recogida: {$row['hora_recogida_salida']}";
+                    "\nFecha llegada: {$row['fecha_entrada']}" .
+                    "\nHora llegada: {$row['hora_entrada']}" .
+                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
+                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
+                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
+                    "\nHora salida: {$row['hora_vuelo_salida']}" .
+                    "\nHora recogida: {$row['hora_recogida_salida']}" .
+                    "\nVehículo ID: {$row['id_vehiculo']}";
+                
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
