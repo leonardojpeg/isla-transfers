@@ -50,15 +50,9 @@ require_once __DIR__ . '/../../../config/db.php';
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="flyNumer" class="form-label">Número de vuelo</label>
-                            <input type="text" name="flyNumer" id="flyNumer" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
                             <label for="pickupTime" class="form-label">Hora de recogida</label>
                             <input type="time" name="pickupTime" id="pickupTime" class="form-control" required>
                         </div>
-                    </div>
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <?php
                             global $pdo;
@@ -74,6 +68,12 @@ require_once __DIR__ . '/../../../config/db.php';
                                 <?php } ?>
                             </select>
                         </div>
+                    </div>
+                    <div class="row mb-3">
+                    <div class="col-md-6">
+                            <label for="passengerNum" class="form-label">Número de pasajeros</label>
+                            <input type="number" name="passengerNum" id="passengerNum" class="form-control" required min="1">
+                        </div>
                         <div class="col-md-6">
                             <?php
                             $query = "SELECT id_vehiculo, descripcion FROM transfer_vehiculo";
@@ -87,12 +87,6 @@ require_once __DIR__ . '/../../../config/db.php';
                                     <option value="<?php echo $row_fleet['id_vehiculo']; ?>"><?php echo $row_fleet['descripcion']; ?></option>
                                 <?php } ?>
                             </select>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label for="passengerNum" class="form-label">Número de pasajeros</label>
-                            <input type="number" name="passengerNum" id="passengerNum" class="form-control" required min="1">
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">

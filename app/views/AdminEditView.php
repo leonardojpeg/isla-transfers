@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/UserModel.php';
 
 // Mostrar el formulario de edición del perfil del usuario
 $userModel = new UserModel();
-$userInfo = $userModel -> getUserInfo($_SESSION['id_viajero']);
+$userInfo = $userModel -> getAdminInfo($_SESSION['id_admin']);
 ?>
 
 <div class="container col-4 p-4" style="padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1); position: relative; margin: 100px auto;">
@@ -23,7 +23,7 @@ $userInfo = $userModel -> getUserInfo($_SESSION['id_viajero']);
         <div class="row mb-3">
             <div class="col-12">
                 <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="email" value="<?= $userInfo['email']; ?>" required>
+                <input type="email" class="form-control" name="email" value="<?= $userInfo['email_admin']; ?>" required>
             </div>
         </div>
 
@@ -38,7 +38,7 @@ $userInfo = $userModel -> getUserInfo($_SESSION['id_viajero']);
         <!-- Botón de Guardar -->
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-primary w-100 py-2" name="submitEdit" value="Guardar">Guardar Cambios</button>
+                <button type="submit" class="btn btn-primary w-100 py-2" name="submitAdminEdit" value="Guardar">Guardar Cambios</button>
             </div>
         </div>
     </form>

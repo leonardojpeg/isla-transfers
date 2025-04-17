@@ -15,10 +15,61 @@ class UserEditController {
             $result = $userModel -> updateUser($userId, $username, $email, $password);
 
             if($result){
-                header("Location: index.php?page=home");
-                exit;
+                echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizado!',
+                                text: 'El perfil se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=userEditProfile';
+                            });
+                        </script>";
+                    exit;
             } else {
-                echo "Error al actualizar el perfil";
+                echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el perfil',
+                            icon: 'error'
+                        })
+                    </script>";
+                    exit;
+            }
+        }
+    }
+
+    public function adminEditProfile(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAdminEdit'])){
+            $adminId = $_SESSION['id_admin'];
+            $username = $_POST['nombre'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $userModel = new UserModel();
+            $result = $userModel -> updateAdminUser($adminId, $username, $email, $password);
+
+            if($result){
+                echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizado!',
+                                text: 'El perfil se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=userEditProfile';
+                            });
+                        </script>";
+                    exit;
+            } else {
+                echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al actualizar el perfil',
+                            icon: 'error'
+                        })
+                    </script>";
+                    exit;
             }
         }
     }

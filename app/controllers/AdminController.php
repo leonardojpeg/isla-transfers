@@ -23,9 +23,16 @@ class AdminController{
                 $result = $bookingModel->addOneWayBooking($uuid, $bookingDate, $bookingTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
 
                 if ($result) {
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=adminPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=adminPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -40,7 +47,6 @@ class AdminController{
                 $uuid = $_POST['uuid'];
                 $dateFly = $_POST['dateFly'];
                 $timeFly = $_POST['timeFly'];
-                $flyNumer = $_POST['flyNumer'];
                 $pickupTime = $_POST['pickupTime'];
                 $hotelSelect = $_POST['hotelSelect'];
                 $carSelect = $_POST['carSelect'];
@@ -50,12 +56,19 @@ class AdminController{
                 $reserveType = 3; //reserva de tipo Administrador
 
                 $bookingModel = new BookingModel();
-                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $flyNumer, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
+                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
                 
                 if($result){
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=adminPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=adminPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -86,9 +99,16 @@ class AdminController{
                 $result = $bookingModel->addRoundTripBooking($uuid, $bookingDate, $bookingTime, $dateFly, $timeFly, $pickupTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
                 
                 if($result){
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=customerPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=adminPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -136,15 +156,34 @@ class AdminController{
                 );
 
                 if ($result) {
-                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Modificada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=adminPanel';
+                            });
+                        </script>";
+                        exit;
                 } else {
-                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=adminPanel';
+                        });
+                    </script>";
+                    exit;
                 }
-                header("Location: index.php?page=customerPanel");
+                header("Location: index.php?page=adminPanel");
                 exit;
             } catch (PDOException $e) {
                 $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
-                header("Location: index.php?page=customerPanel");
+                header("Location: index.php?page=adminPanel");
                 exit;
             }
         }
@@ -184,9 +223,28 @@ class AdminController{
                 );
 
                 if ($result) {
-                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Modificada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=bookingList';
+                            });
+                        </script>";
+                        exit;
                 } else {
-                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=bookingList';
+                        });
+                    </script>";
+                    exit;
                 }
                 header("Location: index.php?page=bookingList");
                 exit;
@@ -208,9 +266,16 @@ class AdminController{
                 $resutl = $bookingModel->deleteBooking($id_reserva);
 
                 if($resutl){
-                    $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=bookingList");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Eliminada!',
+                                text: 'La reserva se ha eliminado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=bookingList';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (Exception $e){
                 echo "Error al eliminar la reserva: " . $e->getMessage();

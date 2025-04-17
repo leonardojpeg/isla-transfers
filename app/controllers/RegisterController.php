@@ -20,23 +20,40 @@ class RegisterController {
             $getUser = $userModel->getUserByEmail($email);
 
             if($getUser){
-                echo 
+                echo
                     "<script>
-                        alert('El email ya existe en el sistema');
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Dirección de correo electrónico ya existe en el sistema',
+                            icon: 'error'
+                        })
                     </script>";
+                    exit;
             } else {
                 $result = $userModel->registerUser($username, $surname, $lastname, $address, $cp, $city, $country, $email, $password);
                 if($result){
                     echo "<script>
-                            alert('Usuario registrado correctamente');
-                            window.location.href = 'index.php?page=login';
+                            Swal.fire({
+                                title: '¡Registrado!',
+                                text: 'El usuario se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=login';
+                            });
                         </script>";
-                    exit;
+                        exit;
                 } else {
                     echo
-                        "<script>
-                            alert('Error al registrar el nuevo usuario');
-                        </script>";
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error al registrar el nuevo usuario',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=welcome';
+                        });
+                    </script>";
+                    exit;
                 }
             }
         }

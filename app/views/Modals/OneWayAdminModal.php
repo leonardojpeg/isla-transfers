@@ -27,7 +27,7 @@ function uuidGenerator($long = 7)
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="index.php?page=customerPanel" method="POST">
+                <form action="index.php?page=adminPanel" method="POST">
                     <input type="hidden" name="submitOneWayAdminReservation" value="1">
                     <div class="row mb-3">
                         <div class="col-md-6">

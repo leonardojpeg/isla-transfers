@@ -30,8 +30,16 @@ class CustomerController
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
 
                 if ($bookingDateTime < $now || $hoursDiff < 48) {
-                    $_SESSION['flash_add_message'] = "Las reservas deben realizarse con al menos 48 horas de antelación.";
-                    header("Location: index.php?page=customerPanel");
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Las reservas deben realizarse con al menos 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
                     exit;
                 }
 
@@ -39,9 +47,16 @@ class CustomerController
                 $result = $bookingModel->addOneWayBooking($uuid, $bookingDate, $bookingTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
 
                 if ($result) {
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=customerPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -74,8 +89,16 @@ class CustomerController
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
 
                 if ($pickupDateTime < $now || $hoursDiff < 48) {
-                    $_SESSION['flash_add_message'] = "Las reservas deben realizarse con al menos 48 horas de antelación.";
-                    header("Location: index.php?page=customerPanel");
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Las reservas deben realizarse con al menos 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
                     exit;
                 }
 
@@ -83,9 +106,16 @@ class CustomerController
                 $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
 
                 if ($result) {
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=customerPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -121,8 +151,16 @@ class CustomerController
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
 
                 if ($bookingDateTime < $now || $hoursDiff < 48) {
-                    $_SESSION['flash_add_message'] = "Las reservas deben realizarse con al menos 48 horas de antelación.";
-                    header("Location: index.php?page=customerPanel");
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Las reservas deben realizarse con al menos 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
                     exit;
                 }
 
@@ -130,9 +168,16 @@ class CustomerController
                 $result = $bookingModel->addRoundTripBooking($uuid, $bookingDate, $bookingTime, $dateFly, $timeFly, $pickupTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $email, $reserveType);
 
                 if ($result) {
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=customerPanel");
-                    exit;
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Registrada!',
+                                text: 'La reserva se ha registrado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -215,7 +260,7 @@ class CustomerController
                             "<script>
                                     Swal.fire({
                                         title: 'Error',
-                                        text: 'No se puede eliminar una con menos de 48 horas de antelación',
+                                        text: 'Las eliminaciones deben realizarse con al menos 48 horas de antelación',
                                         icon: 'error'
                                     }).then(() => {
                                         window.location.href = 'index.php?page=customerPanel';
@@ -227,14 +272,29 @@ class CustomerController
 
                     $result = $bookingModel->deleteBooking($id_reserva);
                     if ($result) {
-                        $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                        header('Location: index.php?page=customerPanel');
+                        echo "<script>
+                            Swal.fire({
+                                title: '¡Eliminada!',
+                                text: 'La reserva se ha eliminado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
                         exit;
                     }
                 } else {
-                    $_SESSION['flash_delete_message'] = "Reserva no encontrada";
-                    header('Location: index.php?page=customerPanel');
-                    exit;
+                    echo
+                            "<script>
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Reserva no encontrada',
+                                        icon: 'error'
+                                    }).then(() => {
+                                        window.location.href = 'index.php?page=customerPanel';
+                                    });
+                                </script>";
+                            exit;
                 }
             } catch (Exception $e) {
                 echo "Error al eliminar la reserva: " . $e->getMessage();
@@ -269,7 +329,7 @@ class CustomerController
                     "<script>
                         Swal.fire({
                             title: 'Error',
-                            text: 'No se puede modificar una reserva con menos de 48 horas de antelación',
+                            text: 'Las modificaciones deben realizarse con al menos 48 horas de antelación',
                             icon: 'error'
                         }).then(() => {
                             window.location.href = 'index.php?page=customerPanel';
@@ -340,8 +400,16 @@ class CustomerController
                 $hoursDiff = ($diff->days * 24) + $diff->h + ($diff->i / 60);
 
                 if ($bookingDateTime < $now || $hoursDiff < 48) {
-                    $_SESSION['flash_edit_message'] = "Las modificaciones deben realizarse con al menos 48 horas de antelación.";
-                    header("Location: index.php?page=customerPanel");
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Las modificaciones deben realizarse con al menos 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
                     exit;
                 }
 
@@ -350,9 +418,28 @@ class CustomerController
                 $result = $bookingModel->updateReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $email);
 
                 if ($result) {
-                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente";
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
                 } else {
-                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva";
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
+                    exit;
                 }
                 header('Location: indexphp?page=customerPanel');
                 exit;
@@ -396,8 +483,16 @@ class CustomerController
                 $hoursReturn = ($diffReturn->days * 24) + $diffReturn->h + ($diffReturn->i / 60);
 
                 if ($arrivalDateTime < $now || $hoursArrival < 48 || $returnDateTime < $now || $hoursReturn < 48) {
-                    $_SESSION['flash_edit_message'] = "Las modificaciones deben realizarse con al menos 48 horas de antelación para ambos trayectos.";
-                    header("Location: index.php?page=customerPanel");
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Las modificaciones deben realizarse con al menos 48 horas de antelación',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
                     exit;
                 }
 
@@ -418,9 +513,28 @@ class CustomerController
                 );
 
                 if ($result) {
-                    $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Actualizada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page=customerPanel';
+                            });
+                        </script>";
+                        exit;
                 } else {
-                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=customerPanel';
+                        });
+                    </script>";
+                    exit;
                 }
                 header("Location: index.php?page=customerPanel");
                 exit;

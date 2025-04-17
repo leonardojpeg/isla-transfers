@@ -25,6 +25,26 @@ class UserModel
         }
     }
 
+    public function getAdminInfo($adminId){
+        global $pdo;
+
+        $query = "
+        SELECT nombre, email_admin, password
+        FROM transfer_admin
+        WHERE id_admin = :adminId
+        ";
+
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':adminId', $adminId);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    }
+
 
     public function registerUser($username, $surname, $lastname, $address, $cp, $city, $country, $email, $password)
     {
@@ -93,6 +113,26 @@ class UserModel
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':userId', $userId);
+
+        return $stmt->execute();
+    }
+
+    public function updateAdminUser($adminId, $username, $email, $password)
+    {
+        global $pdo;
+
+        $query = "UPDATE transfer_admin SET
+        nombre = :nombre,
+        email = :email, 
+        password = :password
+        WHERE id_admin = :adminId";
+
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(':nombre', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':adminId', $adminId);
 
         return $stmt->execute();
     }
