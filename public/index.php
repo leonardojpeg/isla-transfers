@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         require_once __DIR__ . '/../app/controllers/AdminController.php';
         $controller = new AdminController();
         $controller->deleteBooking();
-    }
+    } 
 
     if(isset($_POST['submitOneWayAdminReservation'])){
         require_once __DIR__ . '/../app/controllers/AdminController.php';
@@ -140,8 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new AdminController();
         $controller->addRoundTripBooking();
     }
-
-    
 
 }
 

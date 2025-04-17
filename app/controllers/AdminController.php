@@ -47,10 +47,10 @@ class AdminController{
                 $passengerNum = $_POST['passengerNum'];
                 $customerEmail = $_POST['customerEmailSelect'];
 
-                $reserveType = 3; //reserva de tipo Administrador
+                $reserveType = 2; // tipo Return (Hotel → Aeropuerto)
 
                 $bookingModel = new BookingModel();
-                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $flyNumer, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
+                $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
                 
                 if($result){
                     $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
@@ -87,7 +87,7 @@ class AdminController{
                 
                 if($result){
                     $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=customerPanel");
+                    header("Location: index.php?page=adminPanel");
                     exit;
                 }
             } catch (PDOException $e) {
@@ -139,12 +139,13 @@ class AdminController{
                     $_SESSION['flash_edit_message'] = "Reserva modificada correctamente.";
                 } else {
                     $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
-                }
-                header("Location: index.php?page=customerPanel");
+                } 
+
+                header("Location: index.php?page=adminPanel");
                 exit;
             } catch (PDOException $e) {
                 $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
-                header("Location: index.php?page=customerPanel");
+                header("Location: index.php?page=adminPanel");
                 exit;
             }
         }
@@ -188,16 +189,17 @@ class AdminController{
                 } else {
                     $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
                 }
-                header("Location: index.php?page=bookingList");
+                header("Location: index.php?page=adminPanel");
                 exit;
             } catch (PDOException $e) {
                 $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
-                header("Location: index.php?page=bookingList");
+                header("Location: index.php?page=adminPanel");
                 exit;
             }
         }
     }
 
+    // elimina en bookingList
     public function deleteBooking(){
 
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminDeleteBooking'])){
@@ -205,11 +207,11 @@ class AdminController{
                 $id_reserva = $_POST['id_reserva'];
 
                 $bookingModel = new BookingModel();
-                $resutl = $bookingModel->deleteBooking($id_reserva);
+                $result = $bookingModel->deleteBooking($id_reserva);
 
-                if($resutl){
+                if($result){
                     $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=bookingList");
+                    header("Location: index.php?page=adminPanel");
                     exit;
                 }
             } catch (Exception $e){
@@ -218,5 +220,6 @@ class AdminController{
         }
     }
 }
+
 
 ?>
