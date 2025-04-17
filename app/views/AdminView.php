@@ -129,44 +129,54 @@ if (input) {
 
 
 eventClick: function (info) {
-    const lines = info.event.title.split(" - ");
-    const localizador = lines[0].trim();
-    const destino = lines[1].trim();
-    const clienteConTipo = lines[2].trim();
+    const props = info.event.extendedProps;
 
-    const cliente = clienteConTipo.split(" ")[0];
-    const fecha = info.event.start;
-    const bookingDate = fecha.toISOString().slice(0, 10);
-    const bookingTime = fecha.toTimeString().slice(0, 5);
+    // Rellenar campos comunes
+    document.getElementById("editIdReserva").value = props.id_reserva;
+    document.getElementById("uuid").value = props.localizador;
+    document.getElementById("adcustomerEmail").value = props.email_cliente;
+    document.getElementById("adpassengerNum").value = props.num_viajeros;
 
-    // Tipo: al final del título está (IDA), (VUELTA) o (IDA Y VUELTA)
-    let tipo = 3;
-    if (clienteConTipo.includes("(IDA)")) tipo = 1;
-    else if (clienteConTipo.includes("(VUELTA)")) tipo = 2;
+    // Entrada (IDA)
+    document.getElementById("adbookingDate").value = props.fecha_entrada || '';
+    document.getElementById("adbookingTime").value = props.hora_entrada || '';
+    document.getElementById("adflyNumer").value = props.numero_vuelo_entrada || '';
+    document.getElementById("adoriginAirport").value = props.origen_vuelo_entrada || '';
 
-    // Rellenar campos del modal
-    document.getElementById("uuid").value = localizador;
-    document.getElementById("adcustomerEmail").value = cliente;
-    document.getElementById("adbookingDate").value = bookingDate;
-    document.getElementById("adbookingTime").value = bookingTime;
+    // Salida (VUELTA)
+    document.getElementById("addateFly").value = props.fecha_vuelo_salida || '';
+    document.getElementById("adtimeFly").value = props.hora_vuelo_salida || '';
+    document.getElementById("adpickupTime").value = props.hora_recogida_salida || '';
 
-    const hotelSelect = document.getElementById("adhotelSelect");
-    for (let i = 0; i < hotelSelect.options.length; i++) {
-        if (hotelSelect.options[i].text === destino) {
-            hotelSelect.selectedIndex = i;
+    // Selección del hotel en ambos selects
+    const selectsHotel = [document.getElementById("adhotelSelect"), document.getElementById("addhotelSelect")];
+    selectsHotel.forEach(select => {
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].text === props.nombre_hotel) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+
+            // Selección del vehículo
+            const carSelect = document.getElementById("adcarSelect");
+    for (let i = 0; i < carSelect.options.length; i++) {
+        if (parseInt(carSelect.options[i].value) === parseInt(props.id_vehiculo)) {
+            carSelect.selectedIndex = i;
             break;
         }
     }
 
-    // ✅ Aquí viene lo importante:
-    document.getElementById("editIdReserva").value = info.event.id;
-    document.getElementById("idReservaToDeleteHidden").value = info.event.id;
+    });
 
-    mostrarCamposEdit(tipo.toString());
+    // Mostrar bloques según tipo de reserva
+    mostrarCamposEdit(props.id_tipo_reserva.toString());
 
+    // Mostrar modal
     const modal = new bootstrap.Modal(document.getElementById("editAdminModal"));
     modal.show();
 }
+
         });
 
         calendar.render();
