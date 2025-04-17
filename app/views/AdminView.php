@@ -16,6 +16,11 @@ if (isset($_SESSION['flash_delete_message'])) {
     "<script>alert('" . $_SESSION['flash_delete_message'] . "');</script>";
     unset($_SESSION['flash_delete_message']);
 }
+
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+    header('Location: index.php?page=customerPanel');
+    exit;
+}
 ?>
 
 <div class="container py-3 mt-5">

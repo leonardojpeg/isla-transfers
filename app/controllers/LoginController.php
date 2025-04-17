@@ -26,6 +26,7 @@ class LoginController {
                     if($user && $user['password'] === $password){
                         $_SESSION['email'] = $email;
                         $_SESSION['id_viajero'] = $user['id_viajero'];
+                        $_SESSION['rol'] = 'cliente';
     
                         header("Location: index.php?page=customerPanel");
                         exit;
@@ -50,6 +51,7 @@ class LoginController {
                         if($user && $user['password'] === $password){
                             $_SESSION['email'] = $email;
                             $_SESSION['id_admin'] = $user['id_admin'];
+                            $_SESSION['rol'] = 'admin';
 
                             header("Location: index.php?page=adminPanel");
                             exit;

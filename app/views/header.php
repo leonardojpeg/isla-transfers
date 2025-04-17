@@ -15,6 +15,8 @@ require_once __DIR__ . '/../../config/db.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Icono Favicon -->
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 
 <body>

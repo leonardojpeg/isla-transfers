@@ -12,6 +12,11 @@ if (isset($_SESSION['flash_edit_message'])) {
     "<script>alert('" . $_SESSION['flash_edit_message'] . "');</script>";
     unset($_SESSION['flash_edit_message']);
 }
+
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+    header('Location: index.php?page=customerPanel');
+    exit;
+}
 ?>
 
 <!-- Tabla reservas ida -->
