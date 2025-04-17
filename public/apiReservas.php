@@ -42,7 +42,7 @@ try {
                             $reservas[] = [
                                 'id' => $row['id_reserva'],
                                 'title' => $title,
-                                'start' => $row['fecha_entrada'],
+                                'start' => $row['fecha_entrada'] . 'T' . ($row['hora_entrada'] ?? '00:00:00'),
                                 'color' => '#007bff',
                                 'extendedProps' => [
                                     'tooltip' => $tooltip,
@@ -75,7 +75,7 @@ try {
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
-                        'start' => $row['fecha_vuelo_salida'],
+                        'start' => $row['fecha_vuelo_salida'] . 'T' . ($row['hora_vuelo_salida'] ?? '00:00:00'),
                         'color' => '#dc3545', // Rojo
                         'extendedProps' => [
                             'tooltip' => $tooltip,
@@ -109,7 +109,7 @@ try {
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
-                        'start' => $row['fecha_entrada'],
+                        'start' => $row['fecha_entrada'] . 'T' . ($row['hora_entrada'] ?? '00:00:00'),
                         'color' => '#28a745', // Verde
                         'extendedProps' => [
                             'tooltip' => $tooltip,
@@ -139,7 +139,7 @@ try {
                     $reservas[] = [
                         'id' => $row['id_reserva'],
                         'title' => $title,
-                        'start' => $row['fecha_vuelo_salida'],
+                        'start' => $row['fecha_vuelo_salida'] . 'T' . ($row['hora_vuelo_salida'] ?? '00:00:00'),
                         'color' => '#28a745', // Verde
                         'extendedProps' => [
                             'tooltip' => $tooltip,
