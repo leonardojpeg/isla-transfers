@@ -27,11 +27,7 @@ function uuidGenerator($long = 7)
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-<<<<<<< HEAD
-                <form action="index.php?page=adminPanel" method="POST">
-=======
             <form action="index.php?page=adminPanel" method="POST">
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
                     <input type="hidden" name="submitOneWayAdminReservation" value="1">
                     <div class="row mb-3">
                         <div class="col-md-6">
