@@ -56,7 +56,7 @@ class UserEditController {
                                 text: 'El perfil se ha modificado correctamente',
                                 icon: 'success'
                             }).then(() => {
-                                window.location.href = 'index.php?page=userEditProfile';
+                                window.location.href = 'index.php?page=adminEditProfile';
                             });
                         </script>";
                     exit;

@@ -127,52 +127,73 @@ if (input) {
     }
 },
 
-
 eventClick: function (info) {
-    const props = info.event.extendedProps;
+    const clickedEvent = info.event;
+    const idReserva = clickedEvent.extendedProps.id_reserva;
 
-    // Rellenar campos comunes
-    document.getElementById("editIdReserva").value = props.id_reserva;
-    document.getElementById("uuid").value = props.localizador;
-    document.getElementById("adcustomerEmail").value = props.email_cliente;
-    document.getElementById("adpassengerNum").value = props.num_viajeros;
+    // Filtrar todos los eventos con mismo id_reserva
+    const allEvents = calendar.getEvents().filter(ev => 
+        ev.extendedProps.id_reserva === idReserva
+    );
 
-    // Entrada (IDA)
-    document.getElementById("adbookingDate").value = props.fecha_entrada || '';
-    document.getElementById("adbookingTime").value = props.hora_entrada || '';
-    document.getElementById("adflyNumer").value = props.numero_vuelo_entrada || '';
-    document.getElementById("adoriginAirport").value = props.origen_vuelo_entrada || '';
+    const idaEvent = allEvents.find(ev => ev.id.endsWith('-ida'));
+    const vueltaEvent = allEvents.find(ev => ev.id.endsWith('-vuelta'));
 
-    // Salida (VUELTA)
-    document.getElementById("addateFly").value = props.fecha_vuelo_salida || '';
-    document.getElementById("adtimeFly").value = props.hora_vuelo_salida || '';
-    document.getElementById("adpickupTime").value = props.hora_recogida_salida || '';
+    // Campos comunes
+    document.getElementById("editIdReserva").value = idReserva;
+    document.getElementById("uuid").value = clickedEvent.extendedProps.localizador || '';
+    document.getElementById("adcustomerEmail").value = clickedEvent.extendedProps.email_cliente || '';
+    document.getElementById("adpassengerNum").value = clickedEvent.extendedProps.num_viajeros || '';
 
-    // Selección del hotel en ambos selects
-    const selectsHotel = [document.getElementById("adhotelSelect"), document.getElementById("addhotelSelect")];
-    selectsHotel.forEach(select => {
-        for (let i = 0; i < select.options.length; i++) {
-            if (select.options[i].text === props.nombre_hotel) {
-                select.selectedIndex = i;
+    // Mostrar u ocultar bloques según lo que haya
+    if (idaEvent) {
+        document.getElementById('bloqueIda').style.display = 'block';
+        document.getElementById("adbookingDate").value = idaEvent.extendedProps.fecha_entrada || '';
+        document.getElementById("adbookingTime").value = idaEvent.extendedProps.hora_entrada || '';
+        document.getElementById("adflyNumer").value = idaEvent.extendedProps.numero_vuelo_entrada || '';
+        document.getElementById("adoriginAirport").value = idaEvent.extendedProps.origen_vuelo_entrada || '';
+
+        // Hotel entrada
+        const selectEntrada = document.getElementById("adhotelSelect");
+        for (let i = 0; i < selectEntrada.options.length; i++) {
+            if (selectEntrada.options[i].text.trim() === (idaEvent.extendedProps.nombre_hotel || '').trim()) {
+                selectEntrada.selectedIndex = i;
                 break;
             }
         }
+    } else {
+        document.getElementById('bloqueIda').style.display = 'none';
+    }
 
-            // Selección del vehículo
-            const carSelect = document.getElementById("adcarSelect");
+    if (vueltaEvent) {
+        document.getElementById('bloqueVuelta').style.display = 'block';
+        document.getElementById("addateFly").value = vueltaEvent.extendedProps.fecha_vuelo_salida || '';
+        document.getElementById("adtimeFly").value = vueltaEvent.extendedProps.hora_vuelo_salida || '';
+        document.getElementById("adpickupTime").value = vueltaEvent.extendedProps.hora_recogida_salida || '';
+
+        // Hotel salida
+        const selectSalida = document.getElementById("addhotelSelect");
+        for (let i = 0; i < selectSalida.options.length; i++) {
+            if (selectSalida.options[i].text.trim() === (vueltaEvent.extendedProps.nombre_hotel || '').trim()) {
+                selectSalida.selectedIndex = i;
+                break;
+            }
+        }
+    } else {
+        document.getElementById('bloqueVuelta').style.display = 'none';
+    }
+
+    // Vehículo (puede venir de ida o vuelta)
+    const carSelect = document.getElementById("adcarSelect");
+    const vehiculoID = idaEvent?.extendedProps?.id_vehiculo || vueltaEvent?.extendedProps?.id_vehiculo || null;
     for (let i = 0; i < carSelect.options.length; i++) {
-        if (parseInt(carSelect.options[i].value) === parseInt(props.id_vehiculo)) {
+        if (parseInt(carSelect.options[i].value) === parseInt(vehiculoID)) {
             carSelect.selectedIndex = i;
             break;
         }
     }
 
-    });
-
-    // Mostrar bloques según tipo de reserva
-    mostrarCamposEdit(props.id_tipo_reserva.toString());
-
-    // Mostrar modal
+    // Mostrar el modal
     const modal = new bootstrap.Modal(document.getElementById("editAdminModal"));
     modal.show();
 }

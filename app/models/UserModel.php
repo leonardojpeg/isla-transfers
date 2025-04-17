@@ -123,14 +123,14 @@ class UserModel
 
         $query = "UPDATE transfer_admin SET
         nombre = :nombre,
-        email = :email, 
+        email_admin = :email_admin, 
         password = :password
         WHERE id_admin = :adminId";
 
         $stmt = $pdo->prepare($query);
 
         $stmt->bindParam(':nombre', $username);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':email_admin', $email);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':adminId', $adminId);
 

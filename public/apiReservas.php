@@ -18,9 +18,11 @@ try {
             tr.num_viajeros,
             tr.email_cliente,
             tr.id_vehiculo,
+            tv.descripcion AS vehiculo_descripcion,
             th.nombre_hotel
         FROM transfer_reservas tr
         JOIN transfer_hotel th ON tr.id_destino = th.id_hotel
+        LEFT JOIN transfer_vehiculo tv ON tr.id_vehiculo = tv.id_vehiculo
     ");
 
     $reservas = [];
@@ -29,162 +31,71 @@ try {
         $baseTitle = "{$row['localizador']} - {$row['nombre_hotel']} - {$row['email_cliente']}";
         $commonInfo = "Localizador: {$row['localizador']}\nCliente: {$row['email_cliente']}\nHotel: {$row['nombre_hotel']}\nPasajeros: {$row['num_viajeros']}";
     
-        switch ((int)$row['id_tipo_reserva']) {
-            case 1: // OneWay (IDA)
-                if (!empty($row['fecha_entrada'])) {
-                    $title = $baseTitle . ' (IDA)';
-                    $tooltip = $commonInfo .
-                    "\nFecha llegada: {$row['fecha_entrada']}" .
-                    "\nHora llegada: {$row['hora_entrada']}" .
-                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
-                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
-                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                    "\nHora salida: {$row['hora_vuelo_salida']}" .
-                    "\nHora recogida: {$row['hora_recogida_salida']}" .
-                    "\nVehículo ID: {$row['id_vehiculo']}";                
-
-                            $reservas[] = [
-                                'id' => $row['id_reserva'],
-                                'title' => $title,
-                                'start' => $row['fecha_entrada'] . 'T' . ($row['hora_entrada'] ?? '00:00:00'),
-                                'color' => '#007bff',
-                                'extendedProps' => [
-                                    'tooltip' => $tooltip,
-                                    'id_reserva' => $row['id_reserva'],
-                                    'id_tipo_reserva' => $row['id_tipo_reserva'],
-                                    'localizador' => $row['localizador'],
-                                    'email_cliente' => $row['email_cliente'],
-                                    'fecha_entrada' => $row['fecha_entrada'],
-                                    'hora_entrada' => $row['hora_entrada'],
-                                    'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
-                                    'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
-                                    'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
-                                    'hora_vuelo_salida' => $row['hora_vuelo_salida'],
-                                    'hora_recogida_salida' => $row['hora_recogida_salida'],
-                                    'nombre_hotel' => $row['nombre_hotel'],
-                                    'num_viajeros' => $row['num_viajeros'],
-                                    'id_vehiculo' => $row['id_vehiculo']
-                                    ]
-                            ];
-                }
-                break;
+        $tieneIda = !empty($row['fecha_entrada']);
+        $tieneVuelta = !empty($row['fecha_vuelo_salida']);
     
-            case 2: // Return (VUELTA)
-                if (!empty($row['fecha_vuelo_salida'])) {
-                    $title = $baseTitle . ' (VUELTA)';
-                    $tooltip = $commonInfo .
-                    "\nFecha entrada: {$row['fecha_entrada']}" .
-                    "\nHora entrada: {$row['hora_entrada']}" .
-                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
-                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
-                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                    "\nHora salida: {$row['hora_vuelo_salida']}" .
-                    "\nHora recogida: {$row['hora_recogida_salida']}" .
-                    "\nVehículo ID: {$row['id_vehiculo']}";
-                
-                    $reservas[] = [
-                        'id' => $row['id_reserva'],
-                        'title' => $title,
-                        'start' => $row['fecha_vuelo_salida'] . 'T' . ($row['hora_vuelo_salida'] ?? '00:00:00'),
-                        'color' => '#dc3545', // Rojo
-                        'extendedProps' => [
-                            'tooltip' => $tooltip,
-                            'id_reserva' => $row['id_reserva'],
-                            'id_tipo_reserva' => $row['id_tipo_reserva'],
-                            'localizador' => $row['localizador'],
-                            'email_cliente' => $row['email_cliente'],
-                            'fecha_entrada' => $row['fecha_entrada'],
-                            'hora_entrada' => $row['hora_entrada'],
-                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
-                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
-                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
-                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
-                            'hora_recogida_salida' => $row['hora_recogida_salida'],
-                            'nombre_hotel' => $row['nombre_hotel'],
-                            'num_viajeros' => $row['num_viajeros'],
-                            'id_vehiculo' => $row['id_vehiculo']
-                            ]
-                    ];
-                }
-                break;
+        // IDA
+        if ($tieneIda) {
+            $title = $baseTitle . ($tieneVuelta ? ' (IDA)' : ' (IDA)');
+            $tooltip = $commonInfo .
+                "\nFecha llegada: {$row['fecha_entrada']}" .
+                "\nHora llegada: {$row['hora_entrada']}" .
+                "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
+                "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
+                "\nVehículo: {$row['vehiculo_descripcion']}";
     
-            case 3: // RoundTrip
-                if (!empty($row['fecha_entrada'])) {
-                    $title = $baseTitle . ' (IDA)';
-                    $tooltip = $commonInfo .
-                    "\nFecha llegada: {$row['fecha_entrada']}" .
-                    "\nHora llegada: {$row['hora_entrada']}" .
-                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
-                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
-                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                    "\nHora salida: {$row['hora_vuelo_salida']}" .
-                    "\nHora recogida: {$row['hora_recogida_salida']}" .
-                    "\nVehículo ID: {$row['id_vehiculo']}";
-                
-                    $reservas[] = [
-                        'id' => $row['id_reserva'],
-                        'title' => $title,
-                        'start' => $row['fecha_entrada'] . 'T' . ($row['hora_entrada'] ?? '00:00:00'),
-                        'color' => '#28a745', // Verde
-                        'extendedProps' => [
-                            'tooltip' => $tooltip,
-                            'id_reserva' => $row['id_reserva'],
-                            'id_tipo_reserva' => $row['id_tipo_reserva'],
-                            'localizador' => $row['localizador'],
-                            'email_cliente' => $row['email_cliente'],
-                            'fecha_entrada' => $row['fecha_entrada'],
-                            'hora_entrada' => $row['hora_entrada'],
-                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
-                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
-                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
-                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
-                            'hora_recogida_salida' => $row['hora_recogida_salida'],
-                            'nombre_hotel' => $row['nombre_hotel'],
-                            'num_viajeros' => $row['num_viajeros'],
-                            'id_vehiculo' => $row['id_vehiculo']
-                            ]
-                    ];
-                }
-                if (!empty($row['fecha_vuelo_salida'])) {
-                    $title = $baseTitle . ' (VUELTA)';
-                    $tooltip = $commonInfo .
-                    "\nFecha llegada: {$row['fecha_entrada']}" .
-                    "\nHora llegada: {$row['hora_entrada']}" .
-                    "\nVuelo entrada: {$row['numero_vuelo_entrada']}" .
-                    "\nOrigen vuelo: {$row['origen_vuelo_entrada']}" .
-                    "\nFecha salida: {$row['fecha_vuelo_salida']}" .
-                    "\nHora salida: {$row['hora_vuelo_salida']}" .
-                    "\nHora recogida: {$row['hora_recogida_salida']}" .
-                    "\nVehículo ID: {$row['id_vehiculo']}";
-                
-                    $reservas[] = [
-                        'id' => $row['id_reserva'],
-                        'title' => $title,
-                        'start' => $row['fecha_vuelo_salida'] . 'T' . ($row['hora_vuelo_salida'] ?? '00:00:00'),
-                        'color' => '#28a745', // Verde
-                        'extendedProps' => [
-                            'tooltip' => $tooltip,
-                            'id_reserva' => $row['id_reserva'],
-                            'id_tipo_reserva' => $row['id_tipo_reserva'],
-                            'localizador' => $row['localizador'],
-                            'email_cliente' => $row['email_cliente'],
-                            'fecha_entrada' => $row['fecha_entrada'],
-                            'hora_entrada' => $row['hora_entrada'],
-                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
-                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
-                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
-                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
-                            'hora_recogida_salida' => $row['hora_recogida_salida'],
-                            'nombre_hotel' => $row['nombre_hotel'],
-                            'num_viajeros' => $row['num_viajeros'],
-                            'id_vehiculo' => $row['id_vehiculo']
-                            ]
-                    ];
-                }
-                break;
+            $reservas[] = [
+                'id' => $row['id_reserva'] . '-ida',
+                'title' => $title,
+                'start' => $row['fecha_entrada'] . 'T' . ($row['hora_entrada'] ?? '00:00:00'),
+                'color' => $tieneVuelta ? '#28a745' : '#007bff', // Verde
+                'tipo_viaje' => $tieneVuelta ? 'ida-vuelta' : 'ida',
+                'extendedProps' => [
+                    'tooltip' => $tooltip,
+                    'id_reserva' => $row['id_reserva'],
+                    'localizador' => $row['localizador'],
+                    'email_cliente' => $row['email_cliente'],
+                    'fecha_entrada' => $row['fecha_entrada'],
+                    'hora_entrada' => $row['hora_entrada'],
+                    'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
+                    'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
+                    'nombre_hotel' => $row['nombre_hotel'],
+                    'num_viajeros' => $row['num_viajeros'],
+                    'id_vehiculo' => $row['id_vehiculo']
+                ]
+            ];
+        }
+    
+        // VUELTA
+        if ($tieneVuelta) {
+            $title = $baseTitle . ($tieneIda ? ' (VUELTA)' : ' (VUELTA)');
+            $tooltip = $commonInfo .
+                "\nFecha salida: {$row['fecha_vuelo_salida']}" .
+                "\nHora salida: {$row['hora_vuelo_salida']}" .
+                "\nHora recogida: {$row['hora_recogida_salida']}" .
+                "\nVehículo: {$row['vehiculo_descripcion']}";
+    
+            $reservas[] = [
+                'id' => $row['id_reserva'] . '-vuelta',
+                'title' => $title,
+                'start' => $row['fecha_vuelo_salida'] . 'T' . ($row['hora_vuelo_salida'] ?? '00:00:00'),
+                'color' => $tieneIda ? '#28a745' : '#dc3545', // Verde ida-vuelta, rojo solo vuelta
+                'tipo_viaje' => $tieneIda ? 'ida-vuelta' : 'vuelta',
+                'extendedProps' => [
+                    'tooltip' => $tooltip,
+                    'id_reserva' => $row['id_reserva'],
+                    'localizador' => $row['localizador'],
+                    'email_cliente' => $row['email_cliente'],
+                    'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
+                    'hora_vuelo_salida' => $row['hora_vuelo_salida'],
+                    'hora_recogida_salida' => $row['hora_recogida_salida'],
+                    'nombre_hotel' => $row['nombre_hotel'],
+                    'num_viajeros' => $row['num_viajeros'],
+                    'id_vehiculo' => $row['id_vehiculo']
+                ]
+            ];
         }
     }
-    
 
     echo json_encode($reservas);
 

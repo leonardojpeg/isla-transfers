@@ -93,6 +93,7 @@ if (isset($_SESSION['flash_edit_message'])) {
             }
 
             // Rellenar campos del modal
+            document.getElementById('sourceField').value = 'bookingList';
             document.getElementById('editIdReserva').value = this.dataset.id;
             document.getElementById('uuid').value = this.dataset.localizador;
             document.getElementById('adcustomerEmail').value = this.dataset.email_cliente;

@@ -90,15 +90,9 @@ require_once __DIR__ . '/../../../config/db.php';
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="flyNumer" class="form-label">Número de vuelo</label>
-                            <input type="text" name="flyNumer" id="flyNumer" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
                             <label for="pickupTime" class="form-label">Hora de recogida</label>
                             <input type="time" name="pickupTime" id="pickupTime" class="form-control" required>
                         </div>
-                    </div>
-                    <div class="row mb-3">
                         <div class="col-md-6">
                             <?php
                             global $pdo;

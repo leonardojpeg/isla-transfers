@@ -8,7 +8,7 @@ $userInfo = $userModel -> getAdminInfo($_SESSION['id_admin']);
 ?>
 
 <div class="container col-4 p-4" style="padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1); position: relative; margin: 100px auto;">
-    <form action="index.php?page=userEditProfile" method="POST">
+    <form action="index.php?page=adminEditProfile" method="POST">
         <h3 class="text-center mb-4">Editar perfil</h3>
 
         <!-- Fila 1 (Nombre) -->

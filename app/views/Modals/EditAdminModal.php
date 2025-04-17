@@ -11,27 +11,29 @@ require_once __DIR__ . '/../../../config/db.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editBookingForm" action="index.php?page=adminPanel" method="POST">
+                <?php $source = $_POST['source'] ?? 'adminPanel'; ?>
+                <form id="editBookingForm" action="" method="POST">
                     <input type="hidden" name="submitEditAdminBooking" value="1">
+                    <input type="hidden" name="source" id="sourceField" value="adminPanel"> 
                     <input type="hidden" id="reservaTipo" value="">
                     <input type="hidden" id="editIdReserva" name="id_reserva">
 
                     <!-- Datos comunes visibles siempre -->
                     <h6 class="mb-3">Datos de cliente</h6>
-<div class="row mb-3">
-    <div class="col-md-6">
-        <label class="form-label">Localizador</label>
-        <input type="text" id="uuid" name="uuid" class="form-control" readonly>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">Email cliente</label>
-        <input type="text" name="customerEmail" id="adcustomerEmail" class="form-control" readonly>
-    </div>
-</div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Localizador</label>
+                            <input type="text" id="uuid" name="uuid" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email cliente</label>
+                            <input type="text" name="customerEmail" id="adcustomerEmail" class="form-control" readonly>
+                        </div>
+                    </div>
 
-<!-- BLOQUE: Datos entrada (IDA) -->
-<div id="bloqueIda">
-    <h6 class="mb-3">Datos de entrada</h6>
+                    <!-- BLOQUE: Datos entrada (IDA) -->
+                    <div id="bloqueIda">
+                        <h6 class="mb-3">Datos de entrada</h6>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Día de llegada</label>

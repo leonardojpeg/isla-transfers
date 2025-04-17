@@ -53,7 +53,7 @@ class AdminController{
                 $passengerNum = $_POST['passengerNum'];
                 $customerEmail = $_POST['customerEmailSelect'];
 
-                $reserveType = 2; // tipo Return (Hotel → Aeropuerto)
+                $reserveType = 3; //reserva de tipo Administrador
 
                 $bookingModel = new BookingModel();
                 $result = $bookingModel->addReturnBooking($uuid, $dateFly, $timeFly, $pickupTime, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
@@ -223,6 +223,74 @@ class AdminController{
                 );
 
                 if ($result) {
+                    $source = $_POST['source'] ?? 'adminPanel';
+                    echo "<script>
+                            Swal.fire({
+                                title: '¡Modificada!',
+                                text: 'La reserva se ha modificado correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = 'index.php?page={$source}';
+                            });
+                        </script>";
+                        exit;
+                } else {
+                    echo
+                    "<script>
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se puede ha podido modificar la reserva',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'index.php?page=bookingList';
+                        });
+                    </script>";
+                    exit;
+                }
+                header("Location: index.php?page=adminPanel");
+                exit;
+            } catch (PDOException $e) {
+                $_SESSION['flash_edit_message'] = "Error al modificar la reserva: " . $e->getMessage();
+                header("Location: index.php?page=adminPanel");
+                exit;
+            }
+        }
+    }
+
+    public function updateAdminBookingList(){
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submitEditAdminBooking'])) {
+            try {
+                $uuid = $_POST['uuid'];
+                $bookingDate = !empty($_POST['bookingDate']) ? $_POST['bookingDate'] : null;
+                $bookingTime = !empty($_POST['bookingTime']) ? $_POST['bookingTime'] : null;
+                $flyNumer = !empty($_POST['flyNumer']) ? $_POST['flyNumer'] : null;
+                $originAirport = !empty($_POST['originAirport']) ? $_POST['originAirport'] : null;
+                $dateFly = !empty($_POST['dateFly']) ? $_POST['dateFly'] : null;
+                $timeFly = !empty($_POST['timeFly']) ? $_POST['timeFly'] : null;
+                $pickupTime = !empty($_POST['pickupTime']) ? $_POST['pickupTime'] : null;
+                $hotelSelect = !empty($_POST['hotelSelect']) ? $_POST['hotelSelect'] : null;
+                $carSelect = !empty($_POST['carSelect']) ? $_POST['carSelect'] : null;
+                $passengerNum = !empty($_POST['passengerNum']) ? $_POST['passengerNum'] : null;
+                $email = $_POST['customerEmail'];
+
+                $bookingModel = new BookingModel();
+                $result = $bookingModel->updateRoundTripBooking(
+                    $uuid,
+                    $bookingDate,
+                    $bookingTime,
+                    $flyNumer,
+                    $originAirport,
+                    $dateFly,
+                    $timeFly,
+                    $pickupTime,
+                    $hotelSelect,
+                    $carSelect,
+                    $passengerNum,
+                    $email
+                );
+
+                if ($result) {
                     echo "<script>
                             Swal.fire({
                                 title: '¡Modificada!',
@@ -266,7 +334,7 @@ class AdminController{
                 $bookingModel = new BookingModel();
                 $result = $bookingModel->deleteBooking($id_reserva);
 
-                if($resutl){
+                if($result){
                     echo "<script>
                             Swal.fire({
                                 title: '¡Eliminada!',
