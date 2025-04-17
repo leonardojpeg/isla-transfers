@@ -17,6 +17,7 @@ try {
             tr.origen_vuelo_entrada,
             tr.num_viajeros,
             tr.email_cliente,
+            tr.id_vehiculo,
             th.nombre_hotel
         FROM transfer_reservas tr
         JOIN transfer_hotel th ON tr.id_destino = th.id_hotel
@@ -45,8 +46,21 @@ try {
                                 'color' => '#007bff',
                                 'extendedProps' => [
                                     'tooltip' => $tooltip,
-                                    'id_reserva' => $row['id_reserva'] 
-                                ]
+                                    'id_reserva' => $row['id_reserva'],
+                                    'id_tipo_reserva' => $row['id_tipo_reserva'],
+                                    'localizador' => $row['localizador'],
+                                    'email_cliente' => $row['email_cliente'],
+                                    'fecha_entrada' => $row['fecha_entrada'],
+                                    'hora_entrada' => $row['hora_entrada'],
+                                    'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
+                                    'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
+                                    'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
+                                    'hora_vuelo_salida' => $row['hora_vuelo_salida'],
+                                    'hora_recogida_salida' => $row['hora_recogida_salida'],
+                                    'nombre_hotel' => $row['nombre_hotel'],
+                                    'num_viajeros' => $row['num_viajeros'],
+                                    'id_vehiculo' => $row['id_vehiculo']
+                                    ]
                             ];
                 }
                 break;
@@ -64,9 +78,22 @@ try {
                         'start' => $row['fecha_vuelo_salida'],
                         'color' => '#dc3545', // Rojo
                         'extendedProps' => [
-                        'tooltip' => $tooltip,
-                        'id_reserva' => $row['id_reserva']
-                         ]
+                            'tooltip' => $tooltip,
+                            'id_reserva' => $row['id_reserva'],
+                            'id_tipo_reserva' => $row['id_tipo_reserva'],
+                            'localizador' => $row['localizador'],
+                            'email_cliente' => $row['email_cliente'],
+                            'fecha_entrada' => $row['fecha_entrada'],
+                            'hora_entrada' => $row['hora_entrada'],
+                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
+                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
+                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
+                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
+                            'hora_recogida_salida' => $row['hora_recogida_salida'],
+                            'nombre_hotel' => $row['nombre_hotel'],
+                            'num_viajeros' => $row['num_viajeros'],
+                            'id_vehiculo' => $row['id_vehiculo']
+                            ]
                     ];
                 }
                 break;
@@ -86,8 +113,21 @@ try {
                         'color' => '#28a745', // Verde
                         'extendedProps' => [
                             'tooltip' => $tooltip,
-                            'id_reserva' => $row['id_reserva']
-                             ]
+                            'id_reserva' => $row['id_reserva'],
+                            'id_tipo_reserva' => $row['id_tipo_reserva'],
+                            'localizador' => $row['localizador'],
+                            'email_cliente' => $row['email_cliente'],
+                            'fecha_entrada' => $row['fecha_entrada'],
+                            'hora_entrada' => $row['hora_entrada'],
+                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
+                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
+                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
+                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
+                            'hora_recogida_salida' => $row['hora_recogida_salida'],
+                            'nombre_hotel' => $row['nombre_hotel'],
+                            'num_viajeros' => $row['num_viajeros'],
+                            'id_vehiculo' => $row['id_vehiculo']
+                            ]
                     ];
                 }
                 if (!empty($row['fecha_vuelo_salida'])) {
@@ -103,8 +143,21 @@ try {
                         'color' => '#28a745', // Verde
                         'extendedProps' => [
                             'tooltip' => $tooltip,
-                            'id_reserva' => $row['id_reserva']
-                             ]
+                            'id_reserva' => $row['id_reserva'],
+                            'id_tipo_reserva' => $row['id_tipo_reserva'],
+                            'localizador' => $row['localizador'],
+                            'email_cliente' => $row['email_cliente'],
+                            'fecha_entrada' => $row['fecha_entrada'],
+                            'hora_entrada' => $row['hora_entrada'],
+                            'numero_vuelo_entrada' => $row['numero_vuelo_entrada'],
+                            'origen_vuelo_entrada' => $row['origen_vuelo_entrada'],
+                            'fecha_vuelo_salida' => $row['fecha_vuelo_salida'],
+                            'hora_vuelo_salida' => $row['hora_vuelo_salida'],
+                            'hora_recogida_salida' => $row['hora_recogida_salida'],
+                            'nombre_hotel' => $row['nombre_hotel'],
+                            'num_viajeros' => $row['num_viajeros'],
+                            'id_vehiculo' => $row['id_vehiculo']
+                            ]
                     ];
                 }
                 break;
