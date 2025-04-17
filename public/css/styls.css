@@ -1,0 +1,64 @@
+.table-custom {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-size: 0.95rem;
+}
+
+/* Encabezado */
+.table-custom thead {
+    background-color: #145393;
+    color: white;
+}
+
+/* Celdas */
+.table-custom td,
+.table-custom th {
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px;
+}
+
+/* Zebra stripes más suaves */
+.table-custom tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.table-custom tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Botones de acción más limpios */
+.btn-action {
+    font-weight: 500;
+    border: none;
+    padding: 6px 12px;
+    margin: 2px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    min-width: 90px;      
+    height: 36px;           
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;               
+    font-size: 0.875rem;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #b02a37;
+}

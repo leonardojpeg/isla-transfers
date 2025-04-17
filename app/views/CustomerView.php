@@ -24,6 +24,9 @@ if (isset($_SESSION['flash_edit_message'])) {
     unset($_SESSION['flash_edit_message']);
 }
 ?>
+<header>
+    <link rel="stylesheet" href="css/styls.css">
+</header>
 
 <div class="container py-3 mt-5">
     <h1 class="pb-5 row justify-content-center">Panel de administración de clientes</h1>
@@ -62,7 +65,7 @@ if (isset($_SESSION['flash_edit_message'])) {
     <!-- Tabla reservas ida -->
     <div class="container py-5">
         <h5>Reservas realizadas Aeropuerto-Hotel</h5>
-        <table class="table table-sm table-striped trable-hover mt-4">
+        <table class="table table-sm table-striped table-hover mt-4 table-custom">
             <thead class="table-dark">
                 <tr>
                     <th>Realizada por</th>
@@ -85,7 +88,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                 $controller = new CustomerController();
                 $oneWayBookings = $controller->showOneWayBookings();
                 foreach ($oneWayBookings as $row_booking) { ?>
-                    <tr>
+                   <tr class="tr-oneway">
                         <td><?= $row_booking['tipo_reserva_descripcion']; ?></td>
                         <td><?= $row_booking['localizador']; ?></td>
                         <td><?= $row_booking['email_cliente']; ?></td>
@@ -99,7 +102,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <button type="button" class="btn btn-sm btn-warning editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editOneWayModal"
+                                <button type="button" class="btn-action btn-edit editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editOneWayModal"
                                     data-id="<?= $row_booking['id_reserva']; ?>"
                                     data-localizador="<?= $row_booking['localizador']; ?>"
                                     data-email_cliente="<?= $row_booking['email_cliente']; ?>"
@@ -116,7 +119,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
                                 <input type="hidden" name="deleteBooking" value="1">
                                 <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                <button type="submit" class="btn-action btn-delete"><i class="fa-solid fa-trash"></i> Eliminar</button>
                             </form>
                         </td>
                         </td>
@@ -129,7 +132,7 @@ if (isset($_SESSION['flash_edit_message'])) {
     <!-- Tabla reserva vuelta -->
     <div class="container py-5">
         <h5>Reservas realizadas Hotel-Aeropuerto</h5>
-        <table class="table table-sm table-striped trable-hover mt-4">
+        <table class="table table-sm table-striped table-hover mt-4 table-custom">
             <thead class="table-dark">
                 <tr>
                     <th>Realizada por</th>
@@ -162,7 +165,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <button type="button" class="btn btn-sm btn-warning editReturnBooking" data-bs-toggle="modal" data-bs-target="#editReturnModal"
+                                <button type="button" class="btn-action btn-edit editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editReturnModal"
                                     data-id="<?= $row_booking['id_reserva']; ?>"
                                     data-localizador="<?= $row_booking['localizador']; ?>"
                                     data-email_cliente="<?= $row_booking['email_cliente']; ?>"
@@ -178,7 +181,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
                                 <input type="hidden" name="deleteBooking" value="1">
                                 <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                <button type="submit" class="btn-action btn-delete"><i class="fa-solid fa-trash"></i> Eliminar</button>
                             </form>
                         </td>
                     </tr>
@@ -190,7 +193,7 @@ if (isset($_SESSION['flash_edit_message'])) {
     <!-- Tabla reservas ida-vuelta -->
     <div class="container py-5">
         <h5>Reservas realizadas Aeropuerto-Hotel (ida-vuelta)</h5>
-        <table class="table table-sm table-striped trable-hover mt-4">
+        <table class="table table-sm table-striped table-hover mt-4 table-custom">
             <thead class="table-dark">
                 <tr>
                     <th>Realizada por</th>
@@ -231,7 +234,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <button type="button" class="btn btn-sm btn-warning editRoundTripBooking" data-bs-toggle="modal" data-bs-target="#editRoundTripModal"
+                                <button type="button" class="btn-action btn-edit editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editRoundTripModal"
                                     data-id="<?= $row_booking['id_reserva']; ?>"
                                     data-localizador="<?= $row_booking['localizador']; ?>"
                                     data-destino_nombre_hotel="<?= $row_booking['destino_nombre_hotel']; ?>"
@@ -251,7 +254,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
                                 <input type="hidden" name="deleteBooking" value="1">
                                 <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
-                                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                                <button type="submit" class="btn-action btn-delete"><i class="fa-solid fa-trash"></i> Eliminar</button>
                             </form>
                         </td>
                     </tr>
