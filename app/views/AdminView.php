@@ -22,11 +22,6 @@ if (isset($_SESSION['flash_delete_message'])) {
     <h1 class="pb-5 row justify-content-center">Panel de administración de administradores</h1>
     <div class="row justify-content-center">
         <div class="col-auto">
-<<<<<<< HEAD
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#oneWayAdminModal"><i class="fa-solid fa-circle-plus"></i> Reservar Aeropuerto-Hotel</button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#returnAdminModal"><i class="fa-solid fa-circle-plus"></i> Reservar Hotel-Aeropuerto</button>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#roundTripAdminModal"><i class="fa-solid fa-circle-plus"></i> Reservar ida-vuelta (Aeropuerto-Hotel/Hotel-Aeropuerto)</button>
-=======
 
         <button type="button" class="btn text-white fw-bold" style="background-color: #007bff;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'" data-bs-toggle="modal" data-bs-target="#oneWayAdminModal">
             <i class="fa-solid fa-circle-plus"></i> Reservar Aeropuerto-Hotel
@@ -43,7 +38,6 @@ if (isset($_SESSION['flash_delete_message'])) {
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#returnAdminModal"><i class="fa-solid fa-circle-plus"></i> Reservar Hotel-Aeropuerto</button>
            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roundTripAdminModal"><i class="fa-solid fa-circle-plus"></i> Reservar ida-vuelta (Aeropuerto-Hotel/Hotel-Aeropuerto)</button>
         -->
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
         </div>
     </div>
 <hr>

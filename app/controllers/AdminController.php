@@ -99,7 +99,6 @@ class AdminController{
                 $result = $bookingModel->addRoundTripBooking($uuid, $bookingDate, $bookingTime, $dateFly, $timeFly, $pickupTime, $flyNumer, $originAirport, $hotelSelect, $carSelect, $passengerNum, $customerEmail, $reserveType);
                 
                 if($result){
-<<<<<<< HEAD
                     echo "<script>
                             Swal.fire({
                                 title: '¡Registrada!',
@@ -110,11 +109,6 @@ class AdminController{
                             });
                         </script>";
                         exit;
-=======
-                    $_SESSION['flash_add_message'] = "Reserva registrada correctamente";
-                    header("Location: index.php?page=adminPanel");
-                    exit;
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
                 }
             } catch (PDOException $e) {
                 echo "Error al registrar la reserva: " . $e->getMessage();
@@ -173,7 +167,6 @@ class AdminController{
                         </script>";
                         exit;
                 } else {
-<<<<<<< HEAD
                     echo
                     "<script>
                         Swal.fire({
@@ -186,11 +179,6 @@ class AdminController{
                     </script>";
                     exit;
                 }
-=======
-                    $_SESSION['flash_edit_message'] = "Error al modificar la reserva.";
-                } 
-
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
                 header("Location: index.php?page=adminPanel");
                 exit;
             } catch (PDOException $e) {
@@ -278,7 +266,6 @@ class AdminController{
                 $bookingModel = new BookingModel();
                 $result = $bookingModel->deleteBooking($id_reserva);
 
-<<<<<<< HEAD
                 if($resutl){
                     echo "<script>
                             Swal.fire({
@@ -290,12 +277,6 @@ class AdminController{
                             });
                         </script>";
                         exit;
-=======
-                if($result){
-                    $_SESSION['flash_delete_message'] = "Reserva eliminada correctamente";
-                    header("Location: index.php?page=adminPanel");
-                    exit;
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
                 }
             } catch (Exception $e){
                 echo "Error al eliminar la reserva: " . $e->getMessage();

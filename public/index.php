@@ -150,10 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new AdminController();
         $controller->addRoundTripBooking();
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> a0ec7e6 (implementación de calendario con CRUD, creación, modificación, eliminación y visualización de las reservas a través del calendario. Estilo centrado para el título y los botones, aplicación de códigos de colores para identificar los distintos tipos de reserva en azul, rojo y verde.)
 }
 
 require_once __DIR__ . '/../app/views/footer.php';
