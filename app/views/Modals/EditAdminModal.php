@@ -16,19 +16,22 @@ require_once __DIR__ . '/../../../config/db.php';
                     <input type="hidden" id="reservaTipo" value="">
                     <input type="hidden" id="editIdReserva" name="id_reserva">
 
-                    <!-- BLOQUE: Datos entrada (IDA) -->
-                    <div id="bloqueIda">
-                        <h6 class="mb-3">Datos de entrada</h6>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Localizador</label>
-                                <input type="text" id="uuid" name="uuid" class="form-control" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Email cliente</label>
-                                <input type="text" name="customerEmail" id="adcustomerEmail" class="form-control" readonly>
-                            </div>
-                        </div>
+                    <!-- Datos comunes visibles siempre -->
+                    <h6 class="mb-3">Datos de cliente</h6>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label class="form-label">Localizador</label>
+        <input type="text" id="uuid" name="uuid" class="form-control" readonly>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Email cliente</label>
+        <input type="text" name="customerEmail" id="adcustomerEmail" class="form-control" readonly>
+    </div>
+</div>
+
+<!-- BLOQUE: Datos entrada (IDA) -->
+<div id="bloqueIda">
+    <h6 class="mb-3">Datos de entrada</h6>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Día de llegada</label>

@@ -39,24 +39,26 @@ if (isset($_SESSION['flash_edit_message'])) {
                     <td><?= $row_booking['fecha_reserva']; ?></td>
                     <td><?= $row_booking['fecha_modificacion']; ?></td>
                     <td>
-                    <form action="index.php?page=bookingList" method="POST" style="display:inline;">
-                                <button type="button" class="btn btn-sm btn-warning editAdminBooking" data-bs-toggle="modal" data-bs-target="#editAdminModal"
-                                    data-id="<?= $row_booking['id_reserva']; ?>"
-                                    data-localizador="<?= $row_booking['localizador']; ?>"
-                                    data-destino_nombre_hotel="<?= $row_booking['destino_nombre_hotel']; ?>"
-                                    data-email_cliente="<?= $row_booking['email_cliente']; ?>"
-                                    data-numero_vuelo_entrada="<?= $row_booking['numero_vuelo_entrada']; ?>"
-                                    data-fecha_entrada="<?= $row_booking['fecha_entrada']; ?>"
-                                    data-hora_entrada="<?= $row_booking['hora_entrada']; ?>"
-                                    data-origen_vuelo_entrada="<?= $row_booking['origen_vuelo_entrada']; ?>"
-                                    data-fecha_vuelo_salida="<?= $row_booking['fecha_vuelo_salida']; ?>"
-                                    data-hora_vuelo_salida="<?= $row_booking['hora_vuelo_salida']; ?>"
-                                    data-hora_recogida_salida="<?= $row_booking['hora_recogida_salida']; ?>"
-                                    data-num_viajeros="<?= $row_booking['num_viajeros']; ?>"
-                                    data-vehiculo_descripcion="<?= $row_booking['vehiculo_descripcion']; ?>">
-                                    <i class="fa-solid fa-pen-to-square"></i> Editar
-                                </button>
-                            </form>
+                        <form action="index.php?page=bookingList" method="POST" style="display:inline;">
+                            <button type="button" class="btn btn-sm btn-warning editAdminBooking" data-bs-toggle="modal" data-bs-target="#editAdminModal"
+                                data-id="<?= $row_booking['id_reserva']; ?>"
+                                data-localizador="<?= $row_booking['localizador']; ?>"
+                                data-destino_nombre_hotel="<?= $row_booking['destino_nombre_hotel']; ?>"
+                                data-email_cliente="<?= $row_booking['email_cliente']; ?>"
+                                data-numero_vuelo_entrada="<?= $row_booking['numero_vuelo_entrada']; ?>"
+                                data-fecha_entrada="<?= $row_booking['fecha_entrada']; ?>"
+                                data-hora_entrada="<?= $row_booking['hora_entrada']; ?>"
+                                data-origen_vuelo_entrada="<?= $row_booking['origen_vuelo_entrada']; ?>"
+                                data-fecha_vuelo_salida="<?= $row_booking['fecha_vuelo_salida']; ?>"
+                                data-hora_vuelo_salida="<?= $row_booking['hora_vuelo_salida']; ?>"
+                                data-hora_recogida_salida="<?= $row_booking['hora_recogida_salida']; ?>"
+                                data-num_viajeros="<?= $row_booking['num_viajeros']; ?>"
+                                data-vehiculo_descripcion="<?= $row_booking['vehiculo_descripcion']; ?>"
+                                data-id_tipo_reserva="<?= $row_booking['id_tipo_reserva']; ?>">
+                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            </button>
+                        </form>
+
                         <form action="index.php?page=bookingList" method="POST" style="display:inline;">
                             <input type="hidden" name="adminDeleteBooking" value="1">
                             <input type="hidden" name="id_reserva" value="<?= $row_booking['id_reserva']; ?>">
@@ -70,9 +72,28 @@ if (isset($_SESSION['flash_edit_message'])) {
     </table>
 </div>
 <script>
-// selector para modificar reservas como administrador
+    // selector para modificar reservas como administrador
     document.querySelectorAll('.editAdminBooking').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
+            const tipo = parseInt(this.dataset.id_tipo_reserva);
+
+            // Mostrar secciones según el tipo de reserva
+            const idaBlock = document.getElementById('bloqueIda');
+            const vueltaBlock = document.getElementById('bloqueVuelta');
+
+            if (tipo === 1) { // OneWay
+                idaBlock.style.display = 'block';
+                vueltaBlock.style.display = 'none';
+            } else if (tipo === 2) { // Return
+                idaBlock.style.display = 'none';
+                vueltaBlock.style.display = 'block';
+            } else if (tipo === 3) { // RoundTrip
+                idaBlock.style.display = 'block';
+                vueltaBlock.style.display = 'block';
+            }
+
+            // Rellenar campos del modal
+            document.getElementById('editIdReserva').value = this.dataset.id;
             document.getElementById('uuid').value = this.dataset.localizador;
             document.getElementById('adcustomerEmail').value = this.dataset.email_cliente;
             document.getElementById('adbookingDate').value = this.dataset.fecha_entrada;
