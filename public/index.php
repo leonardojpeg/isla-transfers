@@ -24,6 +24,14 @@ switch ($page) {
         require_once __DIR__ . '/../app/views/BookingListView.php';
         break;
 
+    case 'manageHotel':
+        require_once __DIR__ . '/../app/views/ManageHotelView.php';
+        break;
+
+    case 'manageCar':
+        require_once __DIR__ . '/../app/views/ManageCarView.php';
+        break;
+
     case 'corpPanel':
         require_once __DIR__ . '/../app/views/CorpView.php';
         break;
@@ -150,6 +158,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $controller = new AdminController();
         $controller->addRoundTripBooking();
     }
+
+    if(isset($_POST['submitNewManageHotel'])){
+        require_once __DIR__ . '/../app/controllers/HotelController.php';
+        $controller = new HotelController();
+        $controller->addHotel();
+    }
+
+    if(isset($_POST['submitEditManageHotel'])){
+        require_once __DIR__ . '/../app/controllers/HotelController.php';
+        $controller = new HotelController();
+        $controller->updateHotel();
+    }
+
+    if (isset($_POST['deleteHotel'])) {
+        require_once __DIR__ . '/../app/controllers/HotelController.php';
+        $controller = new HotelController();
+        $controller->deleteHotel();
+    } 
+
+    if(isset($_POST['submitNewManageCar'])){
+        require_once __DIR__ . '/../app/controllers/CarController.php';
+        $controller = new CarController();
+        $controller->addCar();
+    }
+
+    if(isset($_POST['submitEditManageCar'])){
+        require_once __DIR__ . '/../app/controllers/CarController.php';
+        $controller = new CarController();
+        $controller->updateCar();
+    }
+
+    if (isset($_POST['deleteCar'])) {
+        require_once __DIR__ . '/../app/controllers/CarController.php';
+        $controller = new CarController();
+        $controller->deleteCar();
+    } 
 
 }
 

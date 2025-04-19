@@ -24,9 +24,6 @@ if (isset($_SESSION['flash_edit_message'])) {
     unset($_SESSION['flash_edit_message']);
 }
 ?>
-<header>
-    <link rel="stylesheet" href="css/styls.css">
-</header>
 
 <div class="container py-3 mt-5">
     <h1 class="pb-5 row justify-content-center">Panel de administración de clientes</h1>
@@ -165,7 +162,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <button type="button" class="btn-action btn-edit editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editReturnModal"
+                                <button type="button" class="btn-action btn-edit editReturnBooking" data-bs-toggle="modal" data-bs-target="#editReturnModal"
                                     data-id="<?= $row_booking['id_reserva']; ?>"
                                     data-localizador="<?= $row_booking['localizador']; ?>"
                                     data-email_cliente="<?= $row_booking['email_cliente']; ?>"
@@ -234,7 +231,7 @@ if (isset($_SESSION['flash_edit_message'])) {
                         <td><?= $row_booking['vehiculo_descripcion']; ?></td>
                         <td>
                             <form action="index.php?page=customerPanel" method="POST" style="display:inline;">
-                                <button type="button" class="btn-action btn-edit editOneWayBooking" data-bs-toggle="modal" data-bs-target="#editRoundTripModal"
+                                <button type="button" class="btn-action btn-edit editRoundTripBooking" data-bs-toggle="modal" data-bs-target="#editRoundTripModal"
                                     data-id="<?= $row_booking['id_reserva']; ?>"
                                     data-localizador="<?= $row_booking['localizador']; ?>"
                                     data-destino_nombre_hotel="<?= $row_booking['destino_nombre_hotel']; ?>"
